@@ -119,10 +119,7 @@
 
 <script>
 export default {
-  data: () => ({
-    // You'd add data properties for email, password, rememberMe here
-  }),
-  // You'd add methods for login, etc. here
+  data: () => ({}),
 };
 </script>
 

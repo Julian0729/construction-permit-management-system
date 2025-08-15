@@ -1,7 +1,6 @@
 <template>
   <v-app>
-    <!-- Header component based on the provided design -->
-    <v-app-bar flat color="#0000CC" dark height="88">
+    <v-app-bar flat color="#0000CC" dark height="88" app>
       <v-container
         fluid
         class="d-flex align-center justify-space-between py-0"
@@ -16,6 +15,7 @@
             contain
             class="me-3"
           />
+
           <div>
             <div
               style="
@@ -27,6 +27,7 @@
             >
               REPUBLIC OF THE PHILIPPINES
             </div>
+
             <div
               style="
                 font-size: 15px;
@@ -39,6 +40,7 @@
             </div>
           </div>
         </div>
+
         <div class="d-none d-md-flex nav-links">
           <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
           <v-btn text class="mx-2" style="color: white" to="/services"
@@ -51,209 +53,186 @@
       </v-container>
     </v-app-bar>
 
-    <!-- Main content area -->
-    <v-main>
-      <!-- New horizontal banner card -->
-      <v-container fluid class="py-0">
-        <v-card class="banner-card" flat tile>
-          <div
-            class="pa-4 text-h5 font-weight-bold d-flex justify-center align-center"
-          >
-            Building Permit Application
-          </div>
-        </v-card>
-      </v-container>
+    <v-main class="no-scroll">
+      <v-card
+        flat
+        class="d-flex align-center justify-space-between px-6"
+        style="
+          background-color: white;
+          border: 1px solid lightgrey;
+          height: 50px;
+        "
+      >
+        <h3 class="mb-0 font-weight-bold">Building Permit Application</h3>
+      </v-card>
 
-      <v-container fluid class="py-8 fill-height">
-        <v-sheet rounded="lg" class="pa-4 fill-height">
-          <v-row class="fill-height">
-            <!-- Left Sidebar with Steps and Actions -->
-            <v-col cols="12" md="3" class="sidebar d-flex flex-column">
-              <v-card
-                class="sidebar-card pa-4 flex-grow-1 d-flex flex-column"
-                outlined
-              >
-                <div class="font-weight-bold mb-2">
-                  Building Permit Application
-                </div>
-                <div class="text-caption mb-4">
+      <v-container fluid class="pa-0 content-area">
+        <v-row no-gutters class="fill-height">
+          <v-col cols="12" md="3" class="pa-0">
+            <v-card
+              flat
+              class="pa-4 quick-guide-card"
+              style="
+                border: 1px solid lightgrey;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+              "
+            >
+              <div>
+                <h4 class="mb-2">Quick Guide</h4>
+                <div class="text-subtitle-2 mb-4">
                   Follow these steps to complete your application
                 </div>
 
-                <!-- Application steps -->
-                <div class="d-flex align-center mb-2">
-                  <v-icon color="primary" class="mr-2"
-                    >mdi-numeric-1-circle</v-icon
-                  >
-                  <div>Fill up the Unified Application Form</div>
-                </div>
-                <div class="d-flex align-center mb-2">
-                  <v-icon color="primary" class="mr-2"
-                    >mdi-numeric-2-circle</v-icon
-                  >
-                  <div>Select Ancillary Forms</div>
-                </div>
-                <div class="d-flex align-center mb-2">
-                  <v-icon color="primary" class="mr-2"
-                    >mdi-numeric-3-circle</v-icon
-                  >
-                  <div>Download your filled up Forms</div>
-                </div>
-                <div class="d-flex align-center mb-2">
-                  <v-icon color="primary" class="mr-2"
-                    >mdi-numeric-4-circle</v-icon
-                  >
-                  <div>Upload building required documents</div>
-                </div>
-                <div class="d-flex align-center mb-4">
-                  <v-icon color="primary" class="mr-2"
-                    >mdi-numeric-5-circle</v-icon
-                  >
-                  <div>Wait for your application status</div>
+                <div
+                  v-for="(step, index) in steps"
+                  :key="index"
+                  class="quick-guide-item mb-3"
+                >
+                  <v-avatar color="#2563EB" size="30" class="white--text mr-3">
+                    {{ index + 1 }}
+                  </v-avatar>
+                  <div class="font-weight-medium text-body-2">
+                    {{ step }}
+                  </div>
                 </div>
 
-                <!-- Sidebar buttons -->
-                <div class="mt-auto">
-                  <v-btn color="primary" block dark
-                    >Download Complete Checklist</v-btn
-                  >
-                  <v-btn text prepend-icon="mdi-logout" class="mt-2"
-                    >Logout</v-btn
-                  >
-                </div>
-              </v-card>
-            </v-col>
+                <v-btn block color="#2563EB" class="mt-2 white--text">
+                  Download Complete Checklist
+                </v-btn>
+              </div>
 
-            <!-- Right Main Content with Action Cards -->
-            <v-col cols="12" md="9">
-              <v-row justify="space-around" class="cards-row">
-                <!-- Card 1: Fill up form -->
-                <v-col cols="12" sm="6" md="4" class="pa-2">
-                  <v-card
-                    class="pa-4 text-center card-item d-flex flex-column align-center justify-center"
-                    outlined
-                  >
-                    <v-icon color="#4F46E5" size="70"
-                      >mdi-file-document-edit</v-icon
-                    >
-                    <div class="font-weight-semibold mt-2">
-                      Fill up Unified Application Form
-                    </div>
-                    <v-btn
-                      color="#4F46E5"
-                      class="mt-4"
-                      style="color: white"
-                      @click="
-                        (showDialog = true),
-                          (dialogMessage = 'You clicked Fill up Form')
-                      "
-                    >
-                      Fill up Form
-                    </v-btn>
-                  </v-card>
-                </v-col>
+              <div>
+                <v-btn
+                  block
+                  color="white"
+                  class="white--text"
+                  @click="handleLogout"
+                >
+                  Logout
+                </v-btn>
+              </div>
+            </v-card>
+          </v-col>
 
-                <!-- Card 2: Select Ancillary Forms -->
-                <v-col cols="12" sm="6" md="4" class="pa-2">
-                  <v-card
-                    class="pa-4 text-center card-item d-flex flex-column align-center justify-center"
-                    outlined
+          <v-col cols="12" md="9" class="pa-2">
+            <v-row>
+              <v-col cols="12" sm="4" class="pa-2">
+                <v-card
+                  outlined
+                  class="pa-4 text-center d-flex flex-column align-center justify-center"
+                  style="height: 250px"
+                >
+                  <v-icon color="#4F46E5" size="70"
+                    >mdi-file-document-edit</v-icon
                   >
-                    <v-icon color="#9333EA" size="70">mdi-file-check</v-icon>
-                    <div class="font-weight-semibold mt-2">
-                      Select Required Ancillary Form
-                    </div>
-                    <v-btn
-                      color="#9333EA"
-                      class="mt-4"
-                      style="color: white"
-                      @click="
-                        (showDialog = true),
-                          (dialogMessage = 'You clicked Select Ancillary Form')
-                      "
-                    >
-                      Select Required Ancillary Form
-                    </v-btn>
-                  </v-card>
-                </v-col>
+                  <div class="font-weight-semibold mt-2">
+                    Fill up Unified Application Form
+                  </div>
+                  <v-btn
+                    color="#4F46E5"
+                    class="mt-4 white--text"
+                    to="/application"
+                  >
+                    Fill up Form
+                  </v-btn>
+                </v-card>
+              </v-col>
 
-                <!-- Card 3: Upload Requirements -->
-                <v-col cols="12" sm="6" md="4" class="pa-2">
-                  <v-card
-                    class="pa-4 text-center card-item d-flex flex-column align-center justify-center"
-                    outlined
+              <v-col cols="12" sm="4" class="pa-2">
+                <v-card
+                  outlined
+                  class="pa-4 text-center d-flex flex-column align-center justify-center"
+                  style="height: 250px"
+                >
+                  <v-icon color="#9333EA" size="70">mdi-file-check</v-icon>
+                  <div class="font-weight-semibold mt-2">
+                    Select Required Ancillary Form
+                  </div>
+                  <v-btn
+                    color="#9333EA"
+                    class="mt-4 white--text"
+                    to="/ancillary"
                   >
-                    <v-icon color="#2563EB" size="70">mdi-cloud-upload</v-icon>
-                    <div class="font-weight-semibold mt-2">
-                      Upload Requirements
-                    </div>
-                    <v-btn
-                      color="#2563EB"
-                      class="mt-4"
-                      style="color: white"
-                      @click="
-                        (showDialog = true),
-                          (dialogMessage = 'You clicked Upload Requirements')
-                      "
-                    >
-                      Upload Documents
-                    </v-btn>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-sheet>
+                    Select Ancillary Form
+                  </v-btn>
+                </v-card>
+              </v-col>
+
+              <v-col cols="12" sm="4" class="pa-2">
+                <v-card
+                  outlined
+                  class="pa-4 text-center d-flex flex-column align-center justify-center"
+                  style="height: 250px"
+                >
+                  <v-icon color="#2563EB" size="70">mdi-cloud-upload</v-icon>
+                  <div class="font-weight-semibold mt-2">
+                    Upload Requirements
+                  </div>
+                  <v-btn color="#2563EB" class="mt-4 white--text" to="/upload">
+                    Upload Documents
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
       </v-container>
     </v-main>
-
-    <!-- Custom dialog for messages (instead of alert) -->
-    <v-dialog
-      v-model="showDialog"
-      max-width="350"
-      transition="dialog-bottom-transition"
-    >
-      <v-card>
-        <v-card-title class="headline">Action Clicked</v-card-title>
-        <v-card-text>{{ dialogMessage }}</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="showDialog = false">Close</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-app>
-</template> 
+</template>
 
 <script>
 export default {
   name: "BuildingPermitPage",
   data() {
     return {
-      showDialog: false,
-      dialogMessage: "",
+      steps: [
+        "Fill up the Unified Application Form",
+        "Select Ancillary Forms",
+        "Download your filled up Forms",
+        "Upload building required documents",
+        "Wait for your application status",
+      ],
     };
+  },
+  methods: {
+    handleLogout() {
+      console.log("User logged out");
+    },
   },
 };
 </script>
 
 <style scoped>
-.sidebar-card {
+.nav-links .v-btn {
+  text-transform: none !important;
+  font-weight: 500;
+  font-size: 17px;
+}
+html,
+body,
+#app,
+.v-application {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+}
+.v-main.no-scroll {
+  height: calc(100vh - 88px);
   display: flex;
   flex-direction: column;
 }
-.banner-card {
-  height: 105px;
-  width: 100%;
-  max-width: 1920px;
-  background-color: #f0f0f0;
+.content-area {
+  flex: 1;
+  overflow: hidden;
 }
-.cards-row {
-  margin: -8px; /* Counteracts the padding on the columns */
-}
-.card-item {
+.quick-guide-item {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 </style>

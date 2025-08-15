@@ -65,7 +65,7 @@
               One Stop Shop for<br />Construction Permits
             </h1>
             <p class="hero-subtitle">
-              Fast, Efficient, and Convenient Permit Processing for Naga City
+              Fast, Efficient, and Convenient Permit Processing in Naga City
             </p>
             <div class="d-flex mt-6">
               <v-btn color="#2962FF" dark large class="mr-4" to="/services">

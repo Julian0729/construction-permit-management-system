@@ -8,7 +8,7 @@ const router = createRouter({
   routes: [
 
     // LOGIN PART,
-    
+
     // HOME PART,
      {
       path: '/home',
@@ -48,6 +48,44 @@ const router = createRouter({
       name: 'BuildingPermit',
       component: () => import('@/BuildingPermit/buildingpermit.vue'),  // Or any other component for the root
      },
+
+      {
+      path: '/application',
+      name: 'application',
+      component: () => import('@/BuildingPermit/application.vue'),  // Or any other component for the root
+      },
+
+        {
+      path: '/owner',
+      name: 'owner',
+      component: () => import('@/BuildingPermit/owner.vue'),  // Or any other component for the root
+      },
+
+      {
+      path: '/location',
+      name: 'location',
+      component: () => import('@/BuildingPermit/location.vue'),  // Or any other component for the root
+      },
+
+      {
+      path: '/character',
+      name: 'character',
+      component: () => import('@/BuildingPermit/character.vue'),  // Or any other component for the root
+      },
+
+      // BUILDING PERMIT PART ANCILLARY PART
+
+       {
+      path: '/ancillary',
+      name: 'ancillary',
+      component: () => import('@/BuildingPermit/ancillary.vue'),  // Or any other component for the root
+      },
+
+      {
+      path: '/plans',
+      name: 'plans',
+      component: () => import('@/BuildingPermit/plans.vue'),  // Or any other component for the root
+      },
 
       // BUILDING PERMIT LOGIN PART
  {
