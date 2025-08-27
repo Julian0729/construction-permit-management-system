@@ -1,6 +1,5 @@
 <template>
   <div class="page-wrapper">
-    <!-- Header component - Keep this consistent across pages -->
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
@@ -53,7 +52,6 @@
 
     <v-main>
       <v-container fluid class="pa-0">
-        <!-- Hero Section with Background Image -->
         <section
           class="hero-section d-flex align-center justify-center"
           :style="{
@@ -72,10 +70,6 @@
                 <v-icon left>mdi-file-edit-outline</v-icon>
                 Apply Now
               </v-btn>
-              <v-btn outlined large dark>
-                <v-icon left>mdi-help-circle-outline</v-icon>
-                Inquiry
-              </v-btn>
             </div>
           </v-container>
         </section>
@@ -84,7 +78,7 @@
   </div>
 </template>
 
-<script>
+ <script>
 export default {
   name: "HomePage",
   data() {
@@ -97,7 +91,7 @@ export default {
 };
 </script>
 
-<style scoped>
+ <style scoped>
 .page-wrapper {
   background-color: #f7f7f7;
   min-height: 100vh;

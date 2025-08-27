@@ -97,158 +97,173 @@
             </v-stepper-header>
           </v-stepper>
 
-          <v-card height="120" class="my-2">
-            <v-card-title class="text-h6">TYPE OF APPLICATION</v-card-title>
-            <v-card-text>
-              <v-radio-group v-model="selectedApplicationType" mandatory>
-                <v-row>
-                  <v-col cols="12" md="6">
-                    <v-card
-                      height="65"
-                      :class="{
-                        'card-selected': selectedApplicationType === 'simple',
-                      }"
-                      @click="selectedApplicationType = 'simple'"
-                      class="pa-4"
-                      flat
-                    >
-                      <div class="d-flex align-center">
-                        <v-radio :value="'simple'"></v-radio>
-                        <div class="flex-grow-1 ml-2">
-                          <div class="text-h6">Simple</div>
+          <v-form ref="form" @submit.prevent="validateAndProceed">
+            <v-card height="120" class="my-2">
+              <v-card-title class="text-h6">TYPE OF APPLICATION</v-card-title>
+              <v-card-text>
+                <v-radio-group
+                  v-model="selectedApplicationType"
+                  :rules="[(v) => !!v || 'Please select an application type.']"
+                  mandatory
+                >
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-card
+                        height="65"
+                        :class="{
+                          'card-selected': selectedApplicationType === 'simple',
+                        }"
+                        @click="selectedApplicationType = 'simple'"
+                        class="pa-4"
+                        flat
+                      >
+                        <div class="d-flex align-center">
+                          <v-radio :value="'simple'"></v-radio>
+                          <div class="flex-grow-1 ml-2">
+                            <div class="text-h6">Simple</div>
+                          </div>
+                          <v-icon
+                            :color="
+                              selectedApplicationType === 'simple'
+                                ? 'blue'
+                                : 'grey'
+                            "
+                            >mdi-home</v-icon
+                          >
                         </div>
-                        <v-icon
-                          :color="
-                            selectedApplicationType === 'simple'
-                              ? 'blue'
-                              : 'grey'
-                          "
-                          >mdi-home</v-icon
-                        >
-                      </div>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <v-card
-                      height="65"
-                      :class="{
-                        'card-selected': selectedApplicationType === 'complex',
-                      }"
-                      @click="selectedApplicationType = 'complex'"
-                      class="pa-4"
-                      flat
-                    >
-                      <div class="d-flex align-center">
-                        <v-radio :value="'complex'"></v-radio>
-                        <div class="flex-grow-1 ml-2">
-                          <div class="text-h6">Complex</div>
+                      </v-card>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-card
+                        height="65"
+                        :class="{
+                          'card-selected':
+                            selectedApplicationType === 'complex',
+                        }"
+                        @click="selectedApplicationType = 'complex'"
+                        class="pa-4"
+                        flat
+                      >
+                        <div class="d-flex align-center">
+                          <v-radio :value="'complex'"></v-radio>
+                          <div class="flex-grow-1 ml-2">
+                            <div class="text-h6">Complex</div>
+                          </div>
+                          <v-icon
+                            :color="
+                              selectedApplicationType === 'complex'
+                                ? 'blue'
+                                : 'grey'
+                            "
+                            >mdi-truck</v-icon
+                          >
                         </div>
-                        <v-icon
-                          :color="
-                            selectedApplicationType === 'complex'
-                              ? 'blue'
-                              : 'grey'
-                          "
-                          >mdi-truck</v-icon
-                        >
-                      </div>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-radio-group>
-            </v-card-text>
-          </v-card>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-radio-group>
+              </v-card-text>
+            </v-card>
 
-          <v-card height="130" class="my-2">
-            <v-card-title class="text-h6">APPLICATION STATUS</v-card-title>
-            <v-card-text>
-              <v-radio-group v-model="selectedApplicationStatus" mandatory>
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <v-card
-                      :class="{
-                        'card-selected': selectedApplicationStatus === 'new',
-                      }"
-                      @click="selectedApplicationStatus = 'new'"
-                      class="pa-2"
-                      flat
-                      height="70"
-                    >
-                      <div
-                        class="d-flex flex-column align-center justify-center"
+            <v-card height="130" class="my-2">
+              <v-card-title class="text-h6">APPLICATION STATUS</v-card-title>
+              <v-card-text>
+                <v-radio-group
+                  v-model="selectedApplicationStatus"
+                  :rules="[
+                    (v) => !!v || 'Please select an application status.',
+                  ]"
+                  mandatory
+                >
+                  <v-row>
+                    <v-col cols="12" md="4">
+                      <v-card
+                        :class="{
+                          'card-selected': selectedApplicationStatus === 'new',
+                        }"
+                        @click="selectedApplicationStatus = 'new'"
+                        class="pa-2"
+                        flat
+                        height="70"
                       >
-                        <v-radio
-                          :value="'new'"
-                          style="transform: scale(0.8)"
-                        ></v-radio>
-                        <div class="text-center" style="margin-top: -8px">
-                          <div style="font-size: 0.9rem; font-weight: 500">
-                            New
+                        <div
+                          class="d-flex flex-column align-center justify-center"
+                        >
+                          <v-radio
+                            :value="'new'"
+                            style="transform: scale(0.8)"
+                          ></v-radio>
+                          <div class="text-center" style="margin-top: -8px">
+                            <div style="font-size: 0.9rem; font-weight: 500">
+                              New
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-card
-                      :class="{
-                        'card-selected':
-                          selectedApplicationStatus === 'renewal',
-                      }"
-                      @click="selectedApplicationStatus = 'renewal'"
-                      class="pa-2"
-                      flat
-                      height="70"
-                    >
-                      <div
-                        class="d-flex flex-column align-center justify-center"
+                      </v-card>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card
+                        :class="{
+                          'card-selected':
+                            selectedApplicationStatus === 'renewal',
+                        }"
+                        @click="selectedApplicationStatus = 'renewal'"
+                        class="pa-2"
+                        flat
+                        height="70"
                       >
-                        <v-radio
-                          :value="'renewal'"
-                          style="transform: scale(0.8)"
-                        ></v-radio>
-                        <div class="text-center" style="margin-top: -8px">
-                          <div style="font-size: 0.9rem; font-weight: 500">
-                            Renewal
+                        <div
+                          class="d-flex flex-column align-center justify-center"
+                        >
+                          <v-radio
+                            :value="'renewal'"
+                            style="transform: scale(0.8)"
+                          ></v-radio>
+                          <div class="text-center" style="margin-top: -8px">
+                            <div style="font-size: 0.9rem; font-weight: 500">
+                              Renewal
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </v-card>
-                  </v-col>
-                  <v-col cols="12" md="4">
-                    <v-card
-                      :class="{
-                        'card-selected':
-                          selectedApplicationStatus === 'amendatory',
-                      }"
-                      @click="selectedApplicationStatus = 'amendatory'"
-                      class="pa-2"
-                      flat
-                      height="70"
-                    >
-                      <div
-                        class="d-flex flex-column align-center justify-center"
+                      </v-card>
+                    </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card
+                        :class="{
+                          'card-selected':
+                            selectedApplicationStatus === 'amendatory',
+                        }"
+                        @click="selectedApplicationStatus = 'amendatory'"
+                        class="pa-2"
+                        flat
+                        height="70"
                       >
-                        <v-radio
-                          :value="'amendatory'"
-                          style="transform: scale(0.8)"
-                        ></v-radio>
-                        <div class="text-center" style="margin-top: -8px">
-                          <div style="font-size: 0.9rem; font-weight: 500">
-                            Amendatory
+                        <div
+                          class="d-flex flex-column align-center justify-center"
+                        >
+                          <v-radio
+                            :value="'amendatory'"
+                            style="transform: scale(0.8)"
+                          ></v-radio>
+                          <div class="text-center" style="margin-top: -8px">
+                            <div style="font-size: 0.9rem; font-weight: 500">
+                              Amendatory
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-radio-group>
-            </v-card-text>
-          </v-card>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-radio-group>
+              </v-card-text>
+            </v-card>
 
-          <div class="d-flex justify-end">
-            <v-btn color="blue" dark class="mt-4" to="/owner">Next</v-btn>
-          </div>
+            <div class="d-flex justify-end">
+              <v-btn color="blue" dark class="mt-4" @click="validateAndProceed"
+                >Next</v-btn
+              >
+            </div>
+          </v-form>
         </v-container>
       </v-container>
     </v-main>
@@ -262,9 +277,18 @@ export default defineComponent({
   name: "NagaApplicationForm",
   data() {
     return {
-      selectedApplicationType: "simple",
-      selectedApplicationStatus: "new",
+      selectedApplicationType: null,
+      selectedApplicationStatus: null,
     };
+  },
+  methods: {
+    async validateAndProceed() {
+      const { valid } = await this.$refs.form.validate();
+      if (valid) {
+        // Proceed to the next step
+        this.$router.push("/owner");
+      }
+    },
   },
 });
 </script>

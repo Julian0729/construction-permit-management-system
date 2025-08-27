@@ -7,31 +7,32 @@ const router = createRouter({
 
   routes: [
 
+    
     // LOGIN PART,
 
     // HOME PART,
      {
-      path: '/home',
+      path: '/',
       name: 'home',
-      component: () => import('@/Home/home.vue'),  // Or any other component for the root
+      component: () => import('@/Home/home.vue'), 
      },
     // SERVICES PART,
      {
       path: '/services',
       name: 'services',
-      component: () => import('@/Services/services.vue'),  // Or any other component for the root
+      component: () => import('@/Services/services.vue'),  
      },
     // ABOUT PART,
     {
       path: '/about',
       name: 'about',
-      component: () => import('@/About/about.vue'),  // Or any other component for the root
+      component: () => import('@/About/about.vue'), 
      },
     // LOCATIONAL CLEARANCE PART,
     {
       path: '/locational',
       name: 'Locational',
-      component: () => import('@/LocationalClearance/locational.vue'),  // Or any other component for the root
+      component: () => import('@/LocationalClearance/locational.vue'), 
      },
 
     // LOCATIONAL CLEARANCE LOGIN PART
@@ -42,12 +43,6 @@ const router = createRouter({
       component: () => import('@/Login/LC_Login/lclogin.vue'),  // Or any other component for the root
      },
 
-    // BUILDING PERMIT PART,
-    {
-      path: '/buildingpermit',
-      name: 'BuildingPermit',
-      component: () => import('@/BuildingPermit/buildingpermit.vue'),  // Or any other component for the root
-     },
 
       {
       path: '/application',
@@ -85,6 +80,44 @@ const router = createRouter({
       path: '/plans',
       name: 'plans',
       component: () => import('@/BuildingPermit/plans.vue'),  // Or any other component for the root
+      },
+
+            {
+      path: '/review',
+      name: 'review',
+      component: () => import('@/BuildingPermit/review.vue'),  // Or any other component for the root
+      },
+    // ADMIN FOLDER 
+
+   {
+      path: '/ainformation',
+      name: 'ainformation',
+      component: () => import('@/Admin/ainformation.vue'),  // Or any other component for the root
+      },
+
+         {
+      path: '/bpapplicants',
+      name: 'bpapplicants',
+      component: () => import('@/Admin/bpapplicants.vue'),  // Or any other component for the root
+      },
+
+         {
+      path: '/evaluation',
+      name: 'evaluation',
+      component: () => import('@/Admin/evaluation.vue'),  // Or any other component for the root
+      },
+
+         {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@/Admin/dashboard.vue'),  // Or any other component for the root
+      },
+
+          // ADMIN FOLDER 
+   {
+      path: '/buildingpermits',
+      name: 'buildingpermits',
+      component: () => import('@/Architects/buildingpermits.vue'),  // Or any other component for the root
       },
 
       // BUILDING PERMIT LOGIN PART

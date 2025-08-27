@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- Main App Bar -->
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
@@ -38,6 +39,7 @@
             </div>
           </div>
         </div>
+        <!-- Desktop Nav Links -->
         <div class="d-none d-md-flex nav-links">
           <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
           <v-btn text class="mx-2" style="color: white" to="/services"
@@ -50,6 +52,7 @@
       </v-container>
     </v-app-bar>
 
+    <!-- Side Navigation Drawer -->
     <v-navigation-drawer app permanent>
       <div class="d-flex align-center px-4" style="height: 57px">
         <v-icon size="36" class="me-2" color="#007bff"
@@ -118,6 +121,7 @@
       </div>
     </v-navigation-drawer>
 
+    <!-- Main Content Area -->
     <v-main class="bg-grey-lighten-4">
       <div class="d-flex justify-center">
         <v-card
@@ -130,6 +134,7 @@
             border-left: 1px solid rgba(0, 0, 0, 0.12);
           "
         >
+          <!-- Page Header -->
           <div
             class="px-4 py-3 d-flex align-center justify-space-between"
             style="height: 56px"
@@ -138,6 +143,7 @@
               Building Permit Applicants
             </div>
             <div class="d-flex align-center">
+              <!-- Notifications Dropdown -->
               <v-menu :close-on-content-click="false" location="bottom end">
                 <template v-slot:activator="{ props }">
                   <v-badge
@@ -209,29 +215,32 @@
                   </v-card-actions>
                 </v-card>
               </v-menu>
+              <!-- Profile Button -->
               <v-btn text to="/profile" class="profile-btn">
                 <v-avatar size="32" class="mx-2">
-                  <v-img alt="Charlene" src="@/assets/charlene.jpg"></v-img>
+                  <v-img alt="Julian" src="@/assets/ian.jpg"></v-img>
                 </v-avatar>
                 <div class="d-flex flex-column text-left">
                   <span
                     class="text-caption font-weight-bold"
                     style="color: #555; white-space: nowrap"
                   >
-                    Charlene Lumanta
+                    Julian Lumanta
                   </span>
                   <span
                     class="text-caption font-weight-medium"
                     style="color: #888; white-space: nowrap"
                   >
-                    Mechanical Engineer
+                    Architect
                   </span>
                 </div>
               </v-btn>
             </div>
           </div>
           <v-divider></v-divider>
+          <!-- Content Body (Dynamic) -->
           <div class="d-flex flex-grow-1 pa-4 bg-grey-lighten-4">
+            <!-- Left Pane: Applicant Details -->
             <div class="d-flex flex-column" style="flex: 2; gap: 16px">
               <v-card style="border-radius: 8px">
                 <div class="pa-4">
@@ -375,6 +384,7 @@
               </v-card>
             </div>
 
+            <!-- Right Pane: Application Summary & Timeline -->
             <div
               class="d-flex flex-column"
               style="flex: 1; margin-left: 16px; gap: 16px"
@@ -463,7 +473,8 @@
       </div>
     </v-main>
 
-    <v-dialog v-model="isEvaluationModalVisible" width="90%">
+    <!-- Modal for Document Evaluation -->
+    <v-dialog v-model="isEvaluationModalVisible" max-width="800">
       <v-card class="pa-4 rounded-lg">
         <v-card-title class="d-flex align-center justify-space-between pb-0">
           <div class="text-h6 font-weight-bold">Standard Plan Evaluation</div>
@@ -473,7 +484,8 @@
         </v-card-title>
         <v-card-text>
           <v-row>
-            <v-col cols="12" md="8">
+            <!-- Left Pane for image -->
+            <v-col cols="12" md="6">
               <div class="text-subtitle-1 font-weight-bold mb-2">
                 {{ currentEvaluationPlan.name }}
               </div>
@@ -483,14 +495,15 @@
                 class="rounded-lg border-sm"
               ></v-img>
             </v-col>
-            <v-col cols="12" md="4">
+            <!-- Right Pane for evaluation form -->
+            <v-col cols="12" md="6">
               <v-form @submit.prevent="submitEvaluation">
                 <div class="mb-4">
                   <div class="text-subtitle-1 font-weight-bold mb-2">
-                    Mechanical Requirements
+                    Architectural Requirements
                   </div>
                   <v-checkbox
-                    v-for="(req, index) in mechanicalRequirements"
+                    v-for="(req, index) in architecturalRequirements"
                     :key="index"
                     v-model="evaluationData.requirements"
                     :label="req.label"
@@ -515,11 +528,7 @@
                   <div class="text-subtitle-1 font-weight-bold mb-2">
                     Assessment Fee
                   </div>
-                  <v-radio-group
-                    v-model="evaluationData.status"
-                    hide-details
-                    inline
-                  >
+                  <v-radio-group v-model="evaluationData.status" hide-details>
                     <v-radio label="Approved" value="approved"></v-radio>
                     <v-radio label="For Revision" value="forRevision"></v-radio>
                   </v-radio-group>
@@ -527,7 +536,7 @@
                 <div class="d-flex flex-column" style="gap: 4px">
                   <div class="d-flex justify-space-between">
                     <div class="text-caption text-grey-darken-1">
-                      Mechanical Plan Review
+                      Architectural Plan Review
                     </div>
                     <div class="text-caption font-weight-medium">₱500.00</div>
                   </div>
@@ -569,7 +578,7 @@ const applicationsToEvaluate = ref([
     name: "Jin Degusman",
     initials: "JD",
     applicationId: "BP-2024-000123-T",
-    message: "Building permit application requires mechanical evaluation",
+    message: "Building permit application requires architectural evaluation",
     time: "2 days ago",
     status: "Verified",
     read: false,
@@ -578,7 +587,7 @@ const applicationsToEvaluate = ref([
     name: "David Tolo...",
     initials: "DT",
     applicationId: "BP-2024-000567-T",
-    message: "Building permit application requires mechanical evaluation",
+    message: "Building permit application requires architectural evaluation",
     time: "3 days ago",
     status: "Verified",
     read: false,
@@ -587,7 +596,7 @@ const applicationsToEvaluate = ref([
     name: "Jennifer Nayda",
     initials: "JN",
     applicationId: "BP-2024-000910-T",
-    message: "Building permit application requires mechanical evaluation",
+    message: "Building permit application requires architectural evaluation",
     time: "4 days ago",
     status: "Verified",
     read: false,
@@ -615,7 +624,7 @@ const applicants = ref([
     documents: {
       surveyPlans: [
         {
-          name: "Mechanical Plan",
+          name: "Architectural Plan",
           description: "Required Document",
           size: 2.5,
         },
@@ -677,7 +686,7 @@ const applicants = ref([
     documents: {
       surveyPlans: [
         {
-          name: "Mechanical Plan",
+          name: "Architectural Plan",
           description: "Required Document",
           size: 2.1,
         },
@@ -744,7 +753,7 @@ const applicants = ref([
     documents: {
       surveyPlans: [
         {
-          name: "Mechanical Plan",
+          name: "Architectural Plan",
           description: "Required Document",
           size: 5.0,
         },
@@ -809,13 +818,15 @@ const evaluationData = ref({
 
 // Mock data for the evaluation form
 const mockPlanImage = ref(
-  "https://placehold.co/400x300/e0e0e0/000000?text=Mechanical+Plan+Placeholder"
+  "https://placehold.co/400x300/e0e0e0/000000?text=Architectural+Plan+Placeholder"
 );
-const mechanicalRequirements = ref([
-  { label: "Layout of HVAC System and Specification", value: "hvac_system" },
-  { label: "Plumbing and Drainage Layout", value: "drainage_layout" },
-  { label: "Mechanical Sections", value: "mechanical_section" },
-  { label: "Energy Plan", value: "energy_plan" },
+const architecturalRequirements = ref([
+  { label: "Complete Plan Set (1:100 scale)", value: "complete_plan_set" },
+  { label: "Site Plan showing setbacks and site lines", value: "site_plan" },
+  { label: "Floor Plans showing all Rooms", value: "floor_plans" },
+  { label: "All Elevations", value: "all_elevations" },
+  { label: "Sections showing all Floors", value: "all_sections" },
+  { label: "Details (Stair sections/Ramp etc.)", value: "details" },
 ]);
 
 const unreadNotificationsCount = computed(() => {

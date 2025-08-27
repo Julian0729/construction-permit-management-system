@@ -694,7 +694,22 @@
           </v-card>
 
           <div class="d-flex justify-end">
-            <v-btn color="blue" dark class="mt-4">Next</v-btn>
+            <v-btn
+              color="blue-grey-lighten-4"
+              dark
+              class="mt-4 mr-2"
+              to="/location"
+              >Back</v-btn
+            >
+            <v-btn
+              color="blue"
+              dark
+              class="mt-4"
+              to="/review"
+              @click="goToNextStep"
+              :disabled="!formValid"
+              >Next</v-btn
+            >
           </div>
         </v-container>
       </v-container>
@@ -750,7 +765,40 @@ export default defineComponent({
       costOthers: "",
       proposedDate: "",
       expectedDate: "",
+      formValid: false,
     };
+  },
+  watch: {
+    groupA: "validateForm",
+    groupAOptions: "validateForm",
+    groupAOthers: "validateForm",
+    groupB: "validateForm",
+    groupBOptions: "validateForm",
+    groupBOthers: "validateForm",
+    groupC: "validateForm",
+    groupCOptions: "validateForm",
+    groupCOthers: "validateForm",
+    groupE: "validateForm",
+    groupEOptions: "validateForm",
+    groupEOthers: "validateForm",
+    groupF: "validateForm",
+    groupFOptions: "validateForm",
+    groupFOthers: "validateForm",
+    groupG: "validateForm",
+    groupGOptions: "validateForm",
+    groupGOthers: "validateForm",
+    groupH: "validateForm",
+    groupHOptions: "validateForm",
+    groupHOthers: "validateForm",
+    groupI: "validateForm",
+    groupIOptions: "validateForm",
+    groupIOthers: "validateForm",
+    groupJ: "validateForm",
+    groupJOptions: "validateForm",
+    groupJOthers: "validateForm",
+  },
+  mounted() {
+    this.validateForm();
   },
   methods: {
     isNumber(event) {
@@ -764,11 +812,51 @@ export default defineComponent({
       }
     },
     formatNumber(fieldName) {
-      // Remove all non-digit characters
       let value = this[fieldName].replace(/[^\d]/g, "");
-      // Convert to number and then to a locale string with commas
       value = Number(value).toLocaleString("en-US");
       this[fieldName] = value === "0" ? "" : value;
+    },
+    validateForm() {
+      // Check if at least one main group is selected
+      const isAnyGroupSelected =
+        this.groupA ||
+        this.groupB ||
+        this.groupC ||
+        this.groupE ||
+        this.groupF ||
+        this.groupG ||
+        this.groupH ||
+        this.groupI ||
+        this.groupJ;
+
+      // Check if any "Others" options are selected and their text fields are empty
+      const isOthersFilled =
+        (!this.groupAOptions.includes("OthersA") ||
+          this.groupAOthers.trim() !== "") &&
+        (!this.groupBOptions.includes("OthersB") ||
+          this.groupBOthers.trim() !== "") &&
+        (!this.groupCOptions.includes("OthersC") ||
+          this.groupCOthers.trim() !== "") &&
+        (!this.groupEOptions.includes("OthersE") ||
+          this.groupEOthers.trim() !== "") &&
+        (!this.groupFOptions.includes("OthersF") ||
+          this.groupFOthers.trim() !== "") &&
+        (!this.groupGOptions.includes("OthersG") ||
+          this.groupGOthers.trim() !== "") &&
+        (!this.groupHOptions.includes("OthersH") ||
+          this.groupHOthers.trim() !== "") &&
+        (!this.groupIOptions.includes("OthersI") ||
+          this.groupIOthers.trim() !== "") &&
+        (!this.groupJOptions.includes("OthersJ") ||
+          this.groupJOthers.trim() !== "");
+
+      // The form is valid only if at least one group is selected AND all required "Others" fields are filled
+      this.formValid = isAnyGroupSelected && isOthersFilled;
+    },
+    goToNextStep() {
+      // Logic to proceed to the next step, e.g., using Vue Router
+      // this.$router.push('/review-application');
+      console.log("Proceeding to next step!");
     },
   },
 });

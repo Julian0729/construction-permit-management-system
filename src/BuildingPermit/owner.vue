@@ -103,113 +103,153 @@
             </v-stepper-header>
           </v-stepper>
 
-          <v-card class="my-2 pa-4">
-            <v-card-title class="text-h6">OWNER/APPLICANT</v-card-title>
-            <v-card-text class="pa-2">
-              <v-row dense>
-                <v-col cols="12" md="6">
-                  <p class="input-label">Last Name</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">First Name</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">Middle Initial</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">TIN</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+          <v-form ref="form" @submit.prevent="validateAndProceed">
+            <v-card class="my-2 pa-4">
+              <v-card-title class="text-h6">OWNER/APPLICANT</v-card-title>
+              <v-card-text class="pa-2">
+                <v-row dense>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">Last Name</p>
+                    <v-text-field
+                      v-model="lastName"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">First Name</p>
+                    <v-text-field
+                      v-model="firstName"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">Middle Initial</p>
+                    <v-text-field
+                      v-model="middleInitial"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">TIN</p>
+                    <v-text-field
+                      v-model="tin"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
 
-          <v-card class="my-2 pa-4">
-            <v-card-text class="pa-2">
-              <v-row dense class="d-flex align-center">
-                <v-col cols="12" md="6">
-                  <v-radio-group v-model="ownedByEnterprise" mandatory>
-                    <v-radio
-                      label="For Construction Owned by an Enterprise"
-                      value="enterprise"
-                    ></v-radio>
-                  </v-radio-group>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">Form of Ownership</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                    :disabled="ownedByEnterprise !== 'enterprise'"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+            <v-card class="my-2 pa-4">
+              <v-card-title class="text-h6"
+                >FOR CONSTRUCTION OWNED BY AN ENTERPRISE</v-card-title
+              >
+              <v-card-text class="pa-2">
+                <v-radio-group
+                  v-model="ownedByEnterprise"
+                  :rules="[rules.requiredRadio]"
+                  mandatory
+                >
+                  <v-row dense class="d-flex align-center">
+                    <v-col cols="12" md="6">
+                      <v-radio
+                        label="Owned by an Enterprise"
+                        value="enterprise"
+                      ></v-radio>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <p class="input-label">Form of Ownership</p>
+                      <v-text-field
+                        v-model="formOfOwnership"
+                        variant="outlined"
+                        class="textfield-50"
+                        density="compact"
+                        :disabled="ownedByEnterprise !== 'enterprise'"
+                        :rules="[
+                          ownedByEnterprise === 'enterprise'
+                            ? rules.required
+                            : true,
+                        ]"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-radio-group>
+              </v-card-text>
+            </v-card>
 
-          <v-card class="my-2 pa-4">
-            <v-card-title class="text-h6">ADDRESS</v-card-title>
-            <v-card-text class="pa-2">
-              <v-row dense>
-                <v-col cols="12" md="6">
-                  <p class="input-label">No. Street</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">Barangay</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">City/Municipality</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <p class="input-label">Contact No.</p>
-                  <v-text-field
-                    variant="outlined"
-                    class="textfield-50"
-                    density="compact"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+            <v-card class="my-2 pa-4">
+              <v-card-title class="text-h6">ADDRESS</v-card-title>
+              <v-card-text class="pa-2">
+                <v-row dense>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">No. Street</p>
+                    <v-text-field
+                      v-model="street"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">Barangay</p>
+                    <v-text-field
+                      v-model="barangay"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">City/Municipality</p>
+                    <v-text-field
+                      v-model="city"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="6">
+                    <p class="input-label">Contact No.</p>
+                    <v-text-field
+                      v-model="contactNo"
+                      variant="outlined"
+                      class="textfield-50"
+                      density="compact"
+                      :rules="[rules.required]"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
 
-          <div class="d-flex justify-end">
-            <v-btn color="blue" dark class="mt-4" to="/location">Next</v-btn>
-          </div>
+            <div class="d-flex justify-end">
+              <v-btn
+                color="blue-grey-lighten-4"
+                dark
+                class="mt-4 mr-2"
+                to="/application"
+                >Back</v-btn
+              >
+              <v-btn color="blue" dark class="mt-4" @click="validateAndProceed"
+                >Next</v-btn
+              >
+            </div>
+          </v-form>
         </v-container>
       </v-container>
     </v-main>
@@ -223,9 +263,30 @@ export default defineComponent({
   name: "NagaApplicationForm",
   data() {
     return {
-      ownedByEnterprise: null,
       currentStep: "2",
+      lastName: null,
+      firstName: null,
+      middleInitial: null,
+      tin: null,
+      ownedByEnterprise: null,
+      formOfOwnership: null,
+      street: null,
+      barangay: null,
+      city: null,
+      contactNo: null,
+      rules: {
+        required: (value) => !!value || "This field is required.",
+        requiredRadio: (value) => !!value || "Please select an option.",
+      },
     };
+  },
+  methods: {
+    async validateAndProceed() {
+      const { valid } = await this.$refs.form.validate();
+      if (valid) {
+        this.$router.push("/location");
+      }
+    },
   },
 });
 </script>

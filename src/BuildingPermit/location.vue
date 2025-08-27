@@ -103,138 +103,141 @@
             </v-stepper-header>
           </v-stepper>
 
-          <v-card class="my-2 pa-4">
-            <v-card-title class="text-h6"
-              >LOCATION OF CONSTRUCTION</v-card-title
-            >
-            <v-card-text>
-              <v-row dense>
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="blkNo"
-                    label="BLK. No."
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
+          <v-form ref="form" v-model="formValid">
+            <v-card class="my-2 pa-4">
+              <v-card-title class="text-h6"
+                >LOCATION OF CONSTRUCTION</v-card-title
+              >
+              <v-card-text>
+                <v-row dense>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">BLK. No.</div>
+                    <v-text-field
+                      v-model="blkNo"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                    ></v-text-field>
+                  </v-col>
 
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="tctNo"
-                    label="TCT No."
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">TCT No.</div>
+                    <v-text-field
+                      v-model="tctNo"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                    ></v-text-field>
+                  </v-col>
 
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="taxDecNo"
-                    label="Current Tax Dec No."
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">Current Tax Dec No.</div>
+                    <v-text-field
+                      v-model="taxDecNo"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                    ></v-text-field>
+                  </v-col>
 
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="street"
-                    label="Street"
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">Street</div>
+                    <v-text-field
+                      v-model="street"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                    ></v-text-field>
+                  </v-col>
 
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="barangay"
-                    label="Barangay"
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">Barangay</div>
+                    <v-select
+                      v-model="barangay"
+                      :items="barangays"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                    ></v-select>
+                  </v-col>
 
-                <v-col cols="12" sm="4">
-                  <v-text-field
-                    v-model="cityMunicipality"
-                    label="City/Municipal of"
-                    variant="outlined"
-                    density="compact"
-                    style="
-                      height: 50px;
-                      min-height: 50px;
-                      --v-input-control-height: 50px;
-                    "
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
+                  <v-col cols="12" sm="4">
+                    <div class="input-label">City/Municipal of</div>
+                    <v-text-field
+                      v-model="cityMunicipality"
+                      variant="outlined"
+                      density="compact"
+                      :rules="[rules.required]"
+                      style="height: 50px; min-height: 50px"
+                      disabled
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-card-text>
+            </v-card>
 
-          <v-card class="my-2 pa-4">
-            <v-card-title class="text-h6">SCOPE OF WORK</v-card-title>
-            <v-card-text>
-              <v-row dense class="gap-0">
-                <v-col
-                  v-for="(item, i) in scopeOfWork"
-                  :key="i"
-                  cols="12"
-                  sm="4"
-                  class="py-0 my-0"
+            <v-card class="my-2 pa-4">
+              <v-card-title class="text-h6">SCOPE OF WORK</v-card-title>
+              <v-card-text>
+                <v-row dense class="gap-0">
+                  <v-col
+                    v-for="(item, i) in scopeOfWork"
+                    :key="i"
+                    cols="12"
+                    sm="4"
+                    class="py-0 my-0"
+                  >
+                    <v-checkbox
+                      v-model="selectedScope"
+                      :label="item"
+                      :value="item"
+                      hide-details
+                      density="compact"
+                      class="my-0"
+                    ></v-checkbox>
+
+                    <v-text-field
+                      v-if="
+                        item === 'Other (Specify)' &&
+                        selectedScope.includes('Other (Specify)')
+                      "
+                      v-model="otherDetails"
+                      label="Please specify"
+                      variant="outlined"
+                      density="compact"
+                      class="ml-6 my-1"
+                      :rules="[rules.requiredOther]"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <div
+                  v-if="!selectedScope.length && formSubmitted"
+                  class="v-input__details"
+                  style="padding-top: 10px; color: #b00020"
                 >
-                  <v-checkbox
-                    v-model="selectedScope"
-                    :label="item"
-                    :value="item"
-                    hide-details
-                    density="compact"
-                    class="my-0"
-                  ></v-checkbox>
+                  Please select at least one scope of work.
+                </div>
+              </v-card-text>
+            </v-card>
 
-                  <v-text-field
-                    v-if="
-                      item === 'Other (Specify)' &&
-                      selectedScope.includes('Other (Specify)')
-                    "
-                    v-model="otherDetails"
-                    label="Please specify"
-                    variant="outlined"
-                    density="compact"
-                    class="ml-6 my-1"
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-
-          <div class="d-flex justify-end">
-            <v-btn color="blue" dark class="mt-4" to="/character">Next</v-btn>
-          </div>
+            <div class="d-flex justify-end">
+              <v-btn
+                color="blue-grey-lighten-4"
+                dark
+                class="mt-4 mr-2"
+                to="/owner"
+                >Back</v-btn
+              >
+              <v-btn color="blue" dark class="mt-4" @click="nextStep"
+                >Next</v-btn
+              >
+            </div>
+          </v-form>
         </v-container>
       </v-container>
     </v-main>
@@ -249,6 +252,14 @@ export default defineComponent({
   data() {
     return {
       currentStep: "3",
+      formValid: false,
+      formSubmitted: false,
+      blkNo: "",
+      tctNo: "",
+      taxDecNo: "",
+      street: "",
+      barangay: null,
+      cityMunicipality: "Naga City", // Default value set here
       scopeOfWork: [
         "New Construction",
         "Erection",
@@ -264,14 +275,59 @@ export default defineComponent({
         "Other (Specify)",
       ],
       selectedScope: [],
-      blkNo: "",
-      tctNo: "",
-      taxDecNo: "",
-      street: "",
-      barangay: "",
-      cityMunicipality: "",
       otherDetails: "",
+      barangays: [
+        "Abella",
+        "Bagumbayan Norte",
+        "Bagumbayan Sur",
+        "Balatas",
+        "Calauag",
+        "Cararayan",
+        "Carolina",
+        "Concepcion Grande",
+        "Concepcion Pequeña",
+        "Dayangdang",
+        "Del Rosario",
+        "Dinaga",
+        "Igualdad Interior",
+        "Lerma",
+        "Liboton",
+        "Mabolo",
+        "Pacol",
+        "Panicuason",
+        "Peñafrancia",
+        "Sabang",
+        "San Felipe",
+        "San Francisco",
+        "San Isidro",
+        "Santa Cruz",
+        "Tabuco",
+        "Tinago",
+        "Triangulo",
+      ],
+      rules: {
+        required: (value) => !!value || "This field is required.",
+        requiredOther: (value) => {
+          if (this.selectedScope.includes("Other (Specify)")) {
+            return !!value || "Please specify details for 'Other'.";
+          }
+          return true;
+        },
+      },
     };
+  },
+  methods: {
+    async nextStep() {
+      this.formSubmitted = true;
+      const { valid } = await this.$refs.form.validate();
+      const scopeSelected = this.selectedScope.length > 0;
+
+      if (valid && scopeSelected) {
+        this.$router.push("/character");
+      } else {
+        alert("Please fill in all required fields and select a scope of work.");
+      }
+    },
   },
 });
 </script>
