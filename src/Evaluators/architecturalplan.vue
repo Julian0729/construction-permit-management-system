@@ -38,6 +38,7 @@
             </div>
           </div>
         </div>
+
         <div class="d-none d-md-flex nav-links">
           <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
           <v-btn text class="mx-2" style="color: white" to="/services"
@@ -77,28 +78,11 @@
               <span>Dashboard</span>
             </div>
           </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/bpapplicants" class="py-1">
+
+          <v-list-item link to="/architecturalplan" class="py-1">
             <div class="d-flex align-center">
               <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
+              <span>Architectural Plan</span>
             </div>
           </v-list-item>
         </v-list>
@@ -148,56 +132,78 @@
                   <v-card-title
                     class="d-flex justify-space-between align-center"
                   >
-                    <span class="text-h6">Notifications</span>
+                    <span class="text-h6">Applications to Evaluate</span>
                     <v-btn icon @click="closeNotifications">
                       <v-icon>mdi-close</v-icon>
                     </v-btn>
                   </v-card-title>
                   <v-divider></v-divider>
-                  <v-card
-                    v-for="(notification, index) in notifications"
-                    :key="index"
-                    color="blue-lighten-4"
-                    class="ma-2"
-                  >
-                    <v-list-item class="d-flex flex-column align-start">
-                      <div class="d-flex align-center">
-                        <v-icon class="me-2" color="blue-darken-2"
-                          >mdi-file-document-outline</v-icon
+                  <v-list dense>
+                    <v-list-item
+                      v-for="(application, index) in applicationsToEvaluate"
+                      :key="index"
+                      class="py-2"
+                    >
+                      <template v-slot:prepend>
+                        <v-avatar
+                          size="40"
+                          :color="getAvatarColor(application.initials)"
+                          class="font-weight-bold"
+                          >{{ application.initials }}</v-avatar
                         >
-                        <div class="font-weight-bold">
-                          Documents submitted for verification
-                        </div>
-                      </div>
-                      <v-list-item-subtitle class="text-caption mt-1">{{
-                        notification.applicationId
-                      }}</v-list-item-subtitle>
-                      <v-list-item-subtitle class="text-caption">{{
-                        notification.time
-                      }}</v-list-item-subtitle>
+                      </template>
+                      <v-list-item-title class="font-weight-bold">
+                        {{ application.name }}
+                      </v-list-item-title>
+                      <v-list-item-subtitle class="text-caption">
+                        {{ application.applicationId }}
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle class="text-caption mt-1">
+                        {{ application.message }}
+                      </v-list-item-subtitle>
+                      <v-list-item-subtitle class="text-caption mt-1">
+                        {{ application.time }}
+                      </v-list-item-subtitle>
+                      <template v-slot:append>
+                        <v-chip
+                          :color="getStatusColor(application.status)"
+                          size="small"
+                          label
+                          >{{ application.status }}</v-chip
+                        >
+                      </template>
                     </v-list-item>
-                  </v-card>
+                  </v-list>
+                  <v-divider></v-divider>
+                  <v-card-actions class="d-flex justify-center">
+                    <v-btn
+                      variant="text"
+                      color="blue"
+                      to="/building-permit"
+                      class="text-none"
+                    >
+                      View All Applications
+                    </v-btn>
+                  </v-card-actions>
                 </v-card>
               </v-menu>
+
               <v-btn text to="/profile" class="profile-btn">
                 <v-avatar size="32" class="mx-2">
-                  <v-img
-                    alt="John"
-                    src="https://cdn.vuetifyjs.com/images/john.jpg"
-                  ></v-img>
+                  <v-img alt="Julian" src="@/assets/ian.jpg"></v-img>
                 </v-avatar>
                 <div class="d-flex flex-column text-left">
                   <span
                     class="text-caption font-weight-bold"
                     style="color: #555; white-space: nowrap"
                   >
-                    AlyssaC.Alvarez
+                    Julian Lumanta
                   </span>
                   <span
                     class="text-caption font-weight-medium"
                     style="color: #888; white-space: nowrap"
                   >
-                    Administrative
+                    Architect
                   </span>
                 </div>
               </v-btn>
@@ -208,15 +214,19 @@
           <v-card-text class="flex-grow-1 pa-4">
             <v-row class="mb-6">
               <v-col cols="12" sm="6" md="3">
-                <v-card color="#007bff" @click="filterByStatus('Total')">
+                <v-card
+                  color="#007bff"
+                  @click="filterByStatus('Total')"
+                  class="text-white"
+                >
                   <v-card-text
                     class="d-flex align-center justify-space-between"
                   >
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
+                      <div class="text-h6 font-weight-bold">
                         Total Applicants
                       </div>
-                      <div class="text-h4 font-weight-bold text-white">
+                      <div class="text-h4 font-weight-bold">
                         {{ totalApplicants }}
                       </div>
                     </div>
@@ -225,15 +235,17 @@
                 </v-card>
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-card color="#ffc107" @click="filterByStatus('Pending')">
+                <v-card
+                  color="#ffc107"
+                  @click="filterByStatus('Pending')"
+                  class="text-white"
+                >
                   <v-card-text
                     class="d-flex align-center justify-space-between"
                   >
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Pending
-                      </div>
-                      <div class="text-h4 font-weight-bold text-white">
+                      <div class="text-h6 font-weight-bold">Pending</div>
+                      <div class="text-h4 font-weight-bold">
                         {{ pendingApplicants }}
                       </div>
                     </div>
@@ -242,15 +254,17 @@
                 </v-card>
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-card color="#28a745" @click="filterByStatus('Verified')">
+                <v-card
+                  color="#28a745"
+                  @click="filterByStatus('Verified')"
+                  class="text-white"
+                >
                   <v-card-text
                     class="d-flex align-center justify-space-between"
                   >
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Verified
-                      </div>
-                      <div class="text-h4 font-weight-bold text-white">
+                      <div class="text-h6 font-weight-bold">Verified</div>
+                      <div class="text-h4 font-weight-bold">
                         {{ verifiedApplicants }}
                       </div>
                     </div>
@@ -261,15 +275,17 @@
                 </v-card>
               </v-col>
               <v-col cols="12" sm="6" md="3">
-                <v-card color="#dc3545" @click="filterByStatus('Return')">
+                <v-card
+                  color="#dc3545"
+                  @click="filterByStatus('Return')"
+                  class="text-white"
+                >
                   <v-card-text
                     class="d-flex align-center justify-space-between"
                   >
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Return
-                      </div>
-                      <div class="text-h4 font-weight-bold text-white">
+                      <div class="text-h6 font-weight-bold">Return</div>
+                      <div class="text-h4 font-weight-bold">
                         {{ returnApplicants }}
                       </div>
                     </div>
@@ -356,7 +372,6 @@
                     class="text-white"
                     small
                     @click="viewDetails(item)"
-                    to="/evaluation"
                   >
                     View Details
                   </v-btn>
@@ -374,7 +389,7 @@
 import { ref, computed } from "vue";
 const fileInput = ref(null);
 const search = ref("");
-const activeFilter = ref("All");
+const activeFilter = ref("Pending"); // Default to 'Pending'
 const loading = ref(false);
 
 function onClick() {
@@ -384,37 +399,42 @@ function onClick() {
   }, 2000);
 }
 
-const notifications = ref([
+const applicationsToEvaluate = ref([
   {
-    title: "Documents submitted for verification",
-    applicationId: "Application ID: BP-2025-0808-001",
-    message:
-      "A new building permit application has been submitted for verification.",
-    time: "Just now",
+    name: "JM Degusman",
+    initials: "JD",
+    applicationId: "BP-2024-000123-T",
+    message: "Building permit application requires architectural evaluation",
+    time: "2 days ago",
+    status: "Verified",
     read: false,
   },
   {
-    title: "Documents submitted for verification",
-    applicationId: "Application ID: BP-2024-808234-T",
-    message: "Documents submitted for verification",
-    time: "2 hours ago",
+    name: "David Tolo...",
+    initials: "DT",
+    applicationId: "BP-2024-000567-T",
+    message: "Building permit application requires architectural evaluation",
+    time: "3 days ago",
+    status: "Verified",
     read: false,
   },
   {
-    title: "Documents submitted for verification",
-    applicationId: "Application ID: BP-2024-808345-T",
-    message: "Documents submitted for verification",
-    time: "4 hours ago",
+    name: "Jennifer Nayda",
+    initials: "JN",
+    applicationId: "BP-2024-000910-T",
+    message: "Building permit application requires architectural evaluation",
+    time: "4 days ago",
+    status: "Verified",
     read: false,
   },
 ]);
 
 const unreadNotificationsCount = computed(() => {
-  return notifications.value.filter((n) => !n.read).length;
+  return applicationsToEvaluate.value.filter((n) => !n.read).length;
 });
 
 const closeNotifications = () => {
-  notifications.value.forEach((notification) => {
+  applicationsToEvaluate.value.forEach((notification) => {
     notification.read = true;
   });
 };
@@ -433,7 +453,7 @@ const applicants = ref([
     name: "Jm Deguzman",
     applicationNumber: "BP-2024-808123-T",
     dateSubmitted: "Jan 15, 2024",
-    status: "Pending",
+    status: "Verified",
   },
   {
     initials: "SG",
@@ -454,6 +474,27 @@ const applicants = ref([
     name: "Czarina Lopez",
     applicationNumber: "BP-2024-808456-T",
     dateSubmitted: "Jan 18, 2024",
+    status: "Pending",
+  },
+  {
+    initials: "RB",
+    name: "Ramon Bautista",
+    applicationNumber: "BP-2024-808567-T",
+    dateSubmitted: "Jan 19, 2024",
+    status: "Pending",
+  },
+  {
+    initials: "AS",
+    name: "Ana Santos",
+    applicationNumber: "BP-2024-808678-T",
+    dateSubmitted: "Jan 20, 2024",
+    status: "Pending",
+  },
+  {
+    initials: "JL",
+    name: "Joseph Lim",
+    applicationNumber: "BP-2024-808789-T",
+    dateSubmitted: "Jan 21, 2024",
     status: "Pending",
   },
 ]);
@@ -502,6 +543,10 @@ const getStatusColor = (status) => {
 
 const getAvatarColor = (initials) => {
   const colors = {
+    JD: "#007bff",
+    DT: "#17a2b8",
+    JN: "#6f42c4",
+    MS: "#ffc107",
     JM: "#007bff",
     SG: "#28a745",
     MP: "#dc3545",
@@ -510,8 +555,10 @@ const getAvatarColor = (initials) => {
     AS: "#17a2b8",
     JL: "#e83e8c",
     MR: "#fd7e14",
-    AL: "#20c997",
-    DC: "#6c757d",
+    AP: "#007bff",
+    CT: "#17a2b8",
+    EV: "#6f42c4",
+    FB: "#20c997",
   };
   return colors[initials] || "grey";
 };

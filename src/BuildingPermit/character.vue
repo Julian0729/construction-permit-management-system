@@ -3,8 +3,7 @@
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -61,7 +60,9 @@
             height: 50px;
           "
         >
-          <h3 class="mb-0 font-weight-bold">Building Permit Application</h3>
+          <h3 class="mb-0 font-weight-bold page-title-responsive">
+            Building Permit Application
+          </h3>
         </v-card>
 
         <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
@@ -70,7 +71,7 @@
               <v-stepper-item
                 title="Application"
                 value="1"
-                :complete="true"
+                :complete="currentStep > 1"
                 color="blue"
               ></v-stepper-item>
               <v-divider
@@ -79,7 +80,7 @@
               <v-stepper-item
                 title="Owner/Applicant"
                 value="2"
-                :complete="true"
+                :complete="currentStep > 2"
                 color="blue"
               ></v-stepper-item>
               <v-divider
@@ -88,7 +89,7 @@
               <v-stepper-item
                 title="Location & Scope of Work"
                 value="3"
-                :complete="true"
+                :complete="currentStep > 3"
                 color="blue"
               ></v-stepper-item>
               <v-divider
@@ -97,602 +98,614 @@
               <v-stepper-item
                 title="Use or Character of Occupancy"
                 value="4"
+                :complete="currentStep > 4"
                 color="blue"
               ></v-stepper-item>
               <v-divider style="border-width: 2px"></v-divider>
               <v-stepper-item
                 title="Review Application"
                 value="5"
+                :complete="currentStep > 5"
               ></v-stepper-item>
             </v-stepper-header>
           </v-stepper>
-
           <v-card class="my-2 pa-4">
-            <v-card-title class="text-h6"
-              >USE OR CHARACTER OF OCCUPANCY</v-card-title
+            <v-card-title class="text-h6 card-title-responsive"
+              >APPLICATION DETAILS</v-card-title
             >
             <v-card-text>
-              <v-row dense>
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupA"
-                      label="GROUP A: RESIDENTIAL (DWELLINGS)"
-                      value="Group A"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupAOptions"
-                        label="SINGLE"
-                        value="Single"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupA"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupAOptions"
-                        label="DUPLEX"
-                        value="Duplex"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupA"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupAOptions"
-                        label="RESIDENTIAL R-1, R-2"
-                        value="Residential R-1, R-2"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupA"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupAOptions"
-                        label="OTHERS"
-                        value="OthersA"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupA"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupAOptions.includes('OthersA')"
-                        v-model="groupAOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+              <v-card class="mb-4">
+                <v-card-title class="text-h6 card-title-responsive"
+                  >USE OR CHARACTER OF OCCUPANCY</v-card-title
+                >
+                <v-card-text>
+                  <v-row dense>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupA"
+                          label="GROUP A: RESIDENTIAL (DWELLINGS)"
+                          value="Group A"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupAOptions"
+                            label="SINGLE"
+                            value="Single"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupA"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupAOptions"
+                            label="DUPLEX"
+                            value="Duplex"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupA"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupAOptions"
+                            label="RESIDENTIAL R-1, R-2"
+                            value="Residential R-1, R-2"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupA"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupAOptions"
+                            label="OTHERS"
+                            value="OthersA"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupA"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupAOptions.includes('OthersA')"
+                            v-model="groupAOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupB"
-                      label="GROUP B: RESIDENTIAL"
-                      value="Group B"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupBOptions"
-                        label="HOTEL"
-                        value="Hotel"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupB"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupBOptions"
-                        label="MOTEL"
-                        value="Motel"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupB"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupBOptions"
-                        label="TOWNHOUSE"
-                        value="Townhouse"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupB"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupBOptions"
-                        label="DORMITORY"
-                        value="Dormitory"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupB"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupBOptions"
-                        label="OTHERS"
-                        value="OthersB"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupB"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupBOptions.includes('OthersB')"
-                        v-model="groupBOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupB"
+                          label="GROUP B: RESIDENTIAL"
+                          value="Group B"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupBOptions"
+                            label="HOTEL"
+                            value="Hotel"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupB"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupBOptions"
+                            label="MOTEL"
+                            value="Motel"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupB"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupBOptions"
+                            label="TOWNHOUSE"
+                            value="Townhouse"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupB"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupBOptions"
+                            label="DORMITORY"
+                            value="Dormitory"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupB"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupBOptions"
+                            label="OTHERS"
+                            value="OthersB"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupB"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupBOptions.includes('OthersB')"
+                            v-model="groupBOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupC"
-                      label="GROUP C: EDUCATIONAL & RECREATIONAL"
-                      value="Group C"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupCOptions"
-                        label="SCHOOL BUILDING"
-                        value="School Building"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupC"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupCOptions"
-                        label="SCHOOL AUDITORIUM, GYMNASIUM"
-                        value="School Auditorium, Gymnasium"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupC"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupCOptions"
-                        label="OTHERS"
-                        value="OthersC"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupC"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupCOptions.includes('OthersC')"
-                        v-model="groupCOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupC"
+                          label="GROUP C: EDUCATIONAL & RECREATIONAL"
+                          value="Group C"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupCOptions"
+                            label="SCHOOL BUILDING"
+                            value="School Building"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupC"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupCOptions"
+                            label="SCHOOL AUDITORIUM, GYMNASIUM"
+                            value="School Auditorium, Gymnasium"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupC"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupCOptions"
+                            label="OTHERS"
+                            value="OthersC"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupC"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupCOptions.includes('OthersC')"
+                            v-model="groupCOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupE"
-                      label="GROUP E: COMMERCIAL"
-                      value="Group E"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupEOptions"
-                        label="BANK"
-                        value="Bank"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupE"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupEOptions"
-                        label="STORE"
-                        value="Store"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupE"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupEOptions"
-                        label="SHOPPING CENTER/MALL"
-                        value="Shopping Center/Mall"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupE"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupEOptions"
-                        label="OTHERS"
-                        value="OthersE"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupE"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupEOptions.includes('OthersE')"
-                        v-model="groupEOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupE"
+                          label="GROUP E: COMMERCIAL"
+                          value="Group E"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupEOptions"
+                            label="BANK"
+                            value="Bank"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupE"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupEOptions"
+                            label="STORE"
+                            value="Store"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupE"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupEOptions"
+                            label="SHOPPING CENTER/MALL"
+                            value="Shopping Center/Mall"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupE"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupEOptions"
+                            label="OTHERS"
+                            value="OthersE"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupE"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupEOptions.includes('OthersE')"
+                            v-model="groupEOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupF"
-                      label="GROUP F: LIGHT INDUSTRIAL"
-                      value="Group F"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupFOptions"
-                        label="FACTORY/PLANT"
-                        value="Factory/Plant"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupF"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupFOptions"
-                        label="OTHERS"
-                        value="OthersF"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupF"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupFOptions.includes('OthersF')"
-                        v-model="groupFOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupF"
+                          label="GROUP F: LIGHT INDUSTRIAL"
+                          value="Group F"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupFOptions"
+                            label="FACTORY/PLANT"
+                            value="Factory/Plant"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupF"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupFOptions"
+                            label="OTHERS"
+                            value="OthersF"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupF"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupFOptions.includes('OthersF')"
+                            v-model="groupFOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupG"
-                      label="GROUP G: MEDIUM INDUSTRIAL"
-                      value="Group G"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupGOptions"
-                        label="STORAGE/WAREHOUSE"
-                        value="Storage/Warehouse"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupG"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupGOptions"
-                        label="FACTORY"
-                        value="Factory"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupG"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupGOptions"
-                        label="OTHERS"
-                        value="OthersG"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupG"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupGOptions.includes('OthersG')"
-                        v-model="groupGOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupG"
+                          label="GROUP G: MEDIUM INDUSTRIAL"
+                          value="Group G"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupGOptions"
+                            label="STORAGE/WAREHOUSE"
+                            value="Storage/Warehouse"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupG"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupGOptions"
+                            label="FACTORY"
+                            value="Factory"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupG"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupGOptions"
+                            label="OTHERS"
+                            value="OthersG"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupG"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupGOptions.includes('OthersG')"
+                            v-model="groupGOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupH"
-                      label="GROUP H: ASSEMBLY"
-                      value="Group H"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupHOptions"
-                        label="THEATER, AUDITORIUM"
-                        value="Theater, Auditorium"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupH"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupHOptions"
-                        label="OTHERS"
-                        value="OthersH"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupH"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupHOptions.includes('OthersH')"
-                        v-model="groupHOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupH"
+                          label="GROUP H: ASSEMBLY"
+                          value="Group H"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupHOptions"
+                            label="THEATER, AUDITORIUM"
+                            value="Theater, Auditorium"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupH"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupHOptions"
+                            label="OTHERS"
+                            value="OthersH"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupH"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupHOptions.includes('OthersH')"
+                            v-model="groupHOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupI"
-                      label="GROUP I: ASSEMBLY"
-                      value="Group I"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupIOptions"
-                        label="COLISEUM, SPORTS COMPLEX"
-                        value="Coliseum, Sports Complex"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupI"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupIOptions"
-                        label="OTHERS"
-                        value="OthersI"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupI"
-                      ></v-checkbox>
-                      <v-text-field
-                        v-if="groupIOptions.includes('OthersI')"
-                        v-model="groupIOthers"
-                        label="Please specify"
-                        variant="outlined"
-                        density="compact"
-                        class="mt-2"
-                      ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupI"
+                          label="GROUP I: ASSEMBLY"
+                          value="Group I"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupIOptions"
+                            label="COLISEUM, SPORTS COMPLEX"
+                            value="Coliseum, Sports Complex"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupI"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupIOptions"
+                            label="OTHERS"
+                            value="OthersI"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupI"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupIOptions.includes('OthersI')"
+                            v-model="groupIOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
 
-                <v-col cols="12" md="4">
-                  <v-card outlined class="pa-2 h-100">
-                    <v-checkbox
-                      v-model="groupJ"
-                      label="GROUP J: AGRICULTURAL & ACCESSORIES"
-                      value="Group J"
-                      hide-details
-                      density="compact"
-                    ></v-checkbox>
-                    <div class="ms-4">
-                      <v-checkbox
-                        v-model="groupJOptions"
-                        label="AGRICULTURAL STRUCTURES"
-                        value="Agricultural Structures"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupJ"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupJOptions"
-                        label="ACCESSORIES"
-                        value="Accessories"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupJ"
-                      ></v-checkbox>
-                      <v-checkbox
-                        v-model="groupJOptions"
-                        label="OTHERS"
-                        value="OthersJ"
-                        hide-details
-                        density="compact"
-                        :disabled="!groupJ"
-                      ></v-checkbox>
+                    <v-col cols="12" md="4">
+                      <v-card outlined class="pa-2 h-100">
+                        <v-checkbox
+                          v-model="groupJ"
+                          label="GROUP J: AGRICULTURAL & ACCESSORIES"
+                          value="Group J"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+                        <div class="ms-4">
+                          <v-checkbox
+                            v-model="groupJOptions"
+                            label="AGRICULTURAL STRUCTURES"
+                            value="Agricultural Structures"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupJ"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupJOptions"
+                            label="ACCESSORIES"
+                            value="Accessories"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupJ"
+                          ></v-checkbox>
+                          <v-checkbox
+                            v-model="groupJOptions"
+                            label="OTHERS"
+                            value="OthersJ"
+                            hide-details
+                            density="compact"
+                            :disabled="!groupJ"
+                          ></v-checkbox>
+                          <v-text-field
+                            v-if="groupJOptions.includes('OthersJ')"
+                            v-model="groupJOthers"
+                            label="Please specify"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-2"
+                          ></v-text-field>
+                        </div>
+                      </v-card>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
+
+              <v-card>
+                <v-card-title class="text-h6 card-title-responsive"
+                  >PROJECT DETAILS</v-card-title
+                >
+                <v-card-text>
+                  <v-row dense>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-caption">
+                        OCCUPANCY CLASSIFIED
+                      </div>
                       <v-text-field
-                        v-if="groupJOptions.includes('OthersJ')"
-                        v-model="groupJOthers"
-                        label="Please specify"
+                        v-model="occupancyClassified"
                         variant="outlined"
                         density="compact"
-                        class="mt-2"
+                        hide-details
                       ></v-text-field>
-                    </div>
-                  </v-card>
-                </v-col>
-              </v-row>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-subtitle-1 mb-2">
+                        TOTAL ESTIMATED COST
+                      </div>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-caption">NUMBER OF UNITS</div>
+                      <v-text-field
+                        v-model="numberOfUnits"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">BUILDING</div>
+                      <v-text-field
+                        v-model="costBuilding"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costBuilding')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">ELECTRICAL</div>
+                      <v-text-field
+                        v-model="costElectrical"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costElectrical')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-caption">NUMBER OF STOREY</div>
+                      <v-text-field
+                        v-model="numberOfStorey"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">MECHANICAL</div>
+                      <v-text-field
+                        v-model="costMechanical"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costMechanical')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">ELECTRONICS</div>
+                      <v-text-field
+                        v-model="costElectronics"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costElectronics')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-caption">
+                        TOTAL FLOOR AREA (SQ. M)
+                      </div>
+                      <v-text-field
+                        v-model="totalFloorArea"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">PLUMBING</div>
+                      <v-text-field
+                        v-model="costPlumbing"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costPlumbing')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">OTHERS</div>
+                      <v-text-field
+                        v-model="costOthers"
+                        variant="outlined"
+                        density="compact"
+                        prefix="₱"
+                        hide-details
+                        @keypress="isNumber($event)"
+                        @input="formatNumber('costOthers')"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <div class="v-label text-caption">LOT AREA (SQ. M)</div>
+                      <v-text-field
+                        v-model="lotArea"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">
+                        PROPOSED DATE OF CONSTRUCTION
+                      </div>
+                      <v-text-field
+                        v-model="proposedDate"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="3">
+                      <div class="v-label text-caption">
+                        EXPECTED DATE OF COMPLETION
+                      </div>
+                      <v-text-field
+                        v-model="expectedDate"
+                        type="date"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+              </v-card>
             </v-card-text>
           </v-card>
-
-          <v-card class="my-2 pa-4">
-            <v-card-text>
-              <v-row dense>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-caption">OCCUPANCY CLASSIFIED</div>
-                  <v-text-field
-                    v-model="occupancyClassified"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-subtitle-1 mb-2">
-                    TOTAL ESTIMATED COST
-                  </div>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-caption">NUMBER OF UNITS</div>
-                  <v-text-field
-                    v-model="numberOfUnits"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">BUILDING</div>
-                  <v-text-field
-                    v-model="costBuilding"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costBuilding')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">ELECTRICAL</div>
-                  <v-text-field
-                    v-model="costElectrical"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costElectrical')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-caption">NUMBER OF STOREY</div>
-                  <v-text-field
-                    v-model="numberOfStorey"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">MECHANICAL</div>
-                  <v-text-field
-                    v-model="costMechanical"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costMechanical')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">ELECTRONICS</div>
-                  <v-text-field
-                    v-model="costElectronics"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costElectronics')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-caption">
-                    TOTAL FLOOR AREA (SQ. M)
-                  </div>
-                  <v-text-field
-                    v-model="totalFloorArea"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">PLUMBING</div>
-                  <v-text-field
-                    v-model="costPlumbing"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costPlumbing')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">OTHERS</div>
-                  <v-text-field
-                    v-model="costOthers"
-                    variant="outlined"
-                    density="compact"
-                    prefix="₱"
-                    hide-details
-                    @keypress="isNumber($event)"
-                    @input="formatNumber('costOthers')"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="6">
-                  <div class="v-label text-caption">LOT AREA (SQ. M)</div>
-                  <v-text-field
-                    v-model="lotArea"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">
-                    PROPOSED DATE OF CONSTRUCTION
-                  </div>
-                  <v-text-field
-                    v-model="proposedDate"
-                    type="date"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" md="3">
-                  <div class="v-label text-caption">
-                    EXPECTED DATE OF COMPLETION
-                  </div>
-                  <v-text-field
-                    v-model="expectedDate"
-                    type="date"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-card>
-
           <div class="d-flex justify-end">
             <v-btn
               color="blue-grey-lighten-4"
@@ -719,7 +732,6 @@
 
 <script>
 import { defineComponent } from "vue";
-
 export default defineComponent({
   name: "NagaApplicationForm",
   data() {
@@ -817,7 +829,7 @@ export default defineComponent({
       this[fieldName] = value === "0" ? "" : value;
     },
     validateForm() {
-      // Check if at least one main group is selected
+      // Check if at least one main group is selected [cite: 155]
       const isAnyGroupSelected =
         this.groupA ||
         this.groupB ||
@@ -828,8 +840,7 @@ export default defineComponent({
         this.groupH ||
         this.groupI ||
         this.groupJ;
-
-      // Check if any "Others" options are selected and their text fields are empty
+      // Check if any "Others" options are selected and their text fields are empty [cite: 156, 157, 158]
       const isOthersFilled =
         (!this.groupAOptions.includes("OthersA") ||
           this.groupAOthers.trim() !== "") &&
@@ -849,8 +860,7 @@ export default defineComponent({
           this.groupIOthers.trim() !== "") &&
         (!this.groupJOptions.includes("OthersJ") ||
           this.groupJOthers.trim() !== "");
-
-      // The form is valid only if at least one group is selected AND all required "Others" fields are filled
+      // The form is valid only if at least one group is selected AND all required "Others" fields are filled [cite: 159]
       this.formValid = isAnyGroupSelected && isOthersFilled;
     },
     goToNextStep() {
@@ -891,25 +901,37 @@ body,
   display: none;
 }
 
-/* Custom styles for labels to reduce space */
-.v-label {
-  display: block;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  color: rgba(0, 0, 0, 0.6);
-  font-weight: 500;
-  margin-bottom: 0px; /* Reduced space below the label */
-  padding-bottom: 2px; /* A little padding for readability */
+.card-selected {
+  border: 2px solid #1976d2;
+  background-color: #e3f2fd;
 }
 
-/* Reduces the inner padding of the text fields to save space */
-.v-text-field {
-  padding-top: 0;
-  margin-top: 0;
+.card-list-container {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Targets the input control to make it compact */
-.v-text-field .v-input__control {
-  min-height: 38px;
+.my-2 {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .page-title-responsive {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .v-stepper-item .v-stepper-item__title {
+    display: none;
+  }
+  .card-title-responsive {
+    font-size: 1.15rem !important;
+  }
+  .radio-card-title-responsive {
+    font-size: 1rem !important;
+  }
 }
 </style>

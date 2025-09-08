@@ -1,11 +1,9 @@
 <template>
   <v-app>
-    <!-- Your provided header code -->
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -51,11 +49,9 @@
       </v-container>
     </v-app-bar>
 
-    <!-- Main content area for the two cards -->
     <v-main class="bg-grey-lighten-3">
       <v-container fluid style="max-width: 1600px" class="pa-6">
         <v-row>
-          <!-- Left side: Construction Type Guide -->
           <v-col cols="12" md="4">
             <v-card class="pa-4 rounded-lg">
               <v-card-title class="text-h6 font-weight-bold">
@@ -82,10 +78,11 @@
             </v-card>
           </v-col>
 
-          <!-- Right side: Ancillary Forms and NEXT button -->
           <v-col cols="12" md="8">
             <v-card class="pa-6 rounded-lg">
-              <v-card-title class="text-h6 font-weight-bold">
+              <v-card-title
+                class="text-h6 font-weight-bold card-title-responsive"
+              >
                 ANCILLARY FORMS
               </v-card-title>
               <v-card-subtitle class="mt-2 text-wrap">
@@ -114,7 +111,6 @@
                 </v-col>
               </v-row>
             </v-card>
-            <!-- NEXT button moved outside the card -->
             <v-row justify="end" class="mt-4">
               <v-col cols="auto">
                 <v-btn
@@ -206,5 +202,12 @@ const ancillaryForms = ref([
   text-transform: none !important;
   font-weight: 500;
   font-size: 17px;
+}
+
+/* Responsive adjustment for card titles */
+@media (max-width: 960px) {
+  .card-title-responsive {
+    font-size: 1.25rem !important; /* Smaller title size for mobile */
+  }
 }
 </style>

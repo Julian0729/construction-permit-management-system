@@ -12,10 +12,11 @@ const router = createRouter({
 
     // HOME PART,
      {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: () => import('@/Home/home.vue'), 
      },
+
     // SERVICES PART,
      {
       path: '/services',
@@ -113,19 +114,30 @@ const router = createRouter({
       component: () => import('@/Admin/dashboard.vue'),  // Or any other component for the root
       },
 
-          // ADMIN FOLDER 
-   {
+          // ADMIN FOLDER INFOS WITH LOGIN PART
+      {
       path: '/buildingpermits',
       name: 'buildingpermits',
-      component: () => import('@/Architects/buildingpermits.vue'),  // Or any other component for the root
+      component: () => import('@/Architects/architecturalplan.vue'),  // Or any other component for the root
       },
 
+       {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('@/Admin/dashboard.vue'),  // Or any other component for the root
+      },
+ 
+
+
       // BUILDING PERMIT LOGIN PART
- {
+     {
       path: '/bplogin',
       name: 'bplogin',
       component: () => import('@/Login/BP_Login/bplogin.vue'),  // Or any other component for the root
      },
+
+
+      
       
     // OCCUPANCY PERMIT PART,
     {

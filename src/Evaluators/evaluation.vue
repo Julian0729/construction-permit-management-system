@@ -1,10 +1,9 @@
 <template>
-  <v-app>
+  <div class="page-wrapper">
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -50,81 +49,13 @@
       </v-container>
     </v-app-bar>
 
-    <v-navigation-drawer app permanent>
-      <div class="d-flex align-center px-4" style="height: 57px">
-        <v-icon size="36" class="me-2" color="#007bff"
-          >mdi-office-building</v-icon
-        >
-        <div>
-          <div class="text-h7 font-weight-bold" style="line-height: 1.2">
-            Construction Permit
-          </div>
-          <div class="text-caption font-weight-regular" style="color: #6c757d">
-            Management System
-          </div>
-        </div>
-      </div>
-      <div class="d-flex flex-column" style="height: calc(100vh - 88px - 57px)">
-        <v-list
-          nav
-          dense
-          class="py-0"
-          style="font-size: 14px; flex-grow: 1; overflow-y: auto"
-        >
-          <v-list-item link to="/dashboard" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-home-outline</v-icon>
-              <span>Dashboard</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item
-            link
-            to="/buildingpermits"
-            class="py-1"
-            active-class="v-list-item--active"
-          >
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
-            </div>
-          </v-list-item>
-        </v-list>
-        <v-list nav dense class="py-0 mt-auto" style="font-size: 14px">
-          <v-list-item link @click="logout" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-logout</v-icon>
-              <span>Logout</span>
-            </div>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
-
     <v-main class="bg-grey-lighten-4">
       <div class="d-flex justify-center">
         <v-card
           class="d-flex flex-column fill-height"
           style="
             width: 100%;
-            max-width: 1300px;
+            max-width: 100%;
             border-radius: 0;
             box-shadow: none;
             border-left: 1px solid rgba(0, 0, 0, 0.12);
@@ -135,7 +66,7 @@
             style="height: 56px"
           >
             <div class="text-h6 font-weight-bold">
-              Building Permit Applicants
+              Building Permit Applicant
             </div>
             <div class="d-flex align-center">
               <v-menu :close-on-content-click="false" location="bottom end">
@@ -486,6 +417,26 @@
             <v-col cols="12" md="4">
               <v-form @submit.prevent="submitEvaluation">
                 <div class="mb-4">
+                  <div class="d-flex align-center mb-2">
+                    <v-icon size="20" class="me-2" color="red"
+                      >mdi-file-document-outline</v-icon
+                    >
+                    <div class="text-subtitle-1 font-weight-bold">
+                      SPECIFICATIONS
+                    </div>
+                  </div>
+                  <v-divider class="mb-2"></v-divider>
+                  <v-checkbox
+                    v-for="(req, index) in specificationRequirements"
+                    :key="'spec-' + index"
+                    v-model="evaluationData.specifications"
+                    :label="req.label"
+                    :value="req.value"
+                    density="compact"
+                    hide-details
+                  ></v-checkbox>
+                </div>
+                <div class="mb-4">
                   <div class="text-subtitle-1 font-weight-bold mb-2">
                     Architectural Requirements
                   </div>
@@ -557,7 +508,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-  </v-app>
+  </div>
 </template>
 
 <script setup>
@@ -598,7 +549,7 @@ const applicationsToEvaluate = ref([
 const applicants = ref([
   {
     id: 1,
-    applicantName: "Jim Deguzman",
+    applicantName: "JM Deguzman",
     initials: "JD",
     status: "Pending",
     applicationId: "BP-2024-000123-T",
@@ -803,6 +754,7 @@ const isEvaluationModalVisible = ref(false);
 const currentEvaluationPlan = ref({});
 const evaluationData = ref({
   requirements: [],
+  specifications: [],
   comments: "",
   status: "approved",
 });
@@ -818,6 +770,14 @@ const architecturalRequirements = ref([
   { label: "All Elevations", value: "all_elevations" },
   { label: "Sections showing all Floors", value: "all_sections" },
   { label: "Details (Stair sections/Ramp etc.)", value: "details" },
+]);
+
+// NEW: Data for the specifications checklist
+const specificationRequirements = ref([
+  { label: "Material Specifications", value: "material_specifications" },
+  { label: "Construction Methods", value: "construction_methods" },
+  { label: "Quality Standards", value: "quality_standards" },
+  { label: "Safety Requirements", value: "safety_requirements" },
 ]);
 
 const unreadNotificationsCount = computed(() => {
@@ -878,6 +838,7 @@ const submitEvaluation = () => {
   // Reset the form data
   evaluationData.value = {
     requirements: [],
+    specifications: [],
     comments: "",
     status: "approved",
   };
@@ -885,6 +846,10 @@ const submitEvaluation = () => {
 </script>
 
 <style scoped>
+.page-wrapper {
+  background-color: rgb(255, 255, 255);
+  min-height: 100vh;
+}
 .nav-links .v-btn {
   text-transform: none !important;
   font-weight: 500;

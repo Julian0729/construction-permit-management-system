@@ -76,7 +76,7 @@
 
           <div class="text-caption text-right ml-3">
             Building Permit Number<br />
-            <span class="font-weight-bold">BP-2025-0808-001</span>
+            <span class="font-weight-bold">BP-2024-001</span>
           </div>
         </div>
       </v-card>
@@ -159,18 +159,22 @@
               <v-col cols="12" class="pa-2">
                 <v-card outlined class="pa-4">
                   <h4 class="mb-2">Application Status Tracker</h4>
-                  <v-timeline side="end" :line-color="'#E5E7EB'">
-                    <v-timeline-item
-                      dot-color="#2563EB"
-                      size="small"
-                      icon="mdi-check-circle"
-                    >
-                      <div>
+                  <div class="custom-timeline-container">
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#2563EB" size="24"
+                            >mdi-check-circle</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
+                      </div>
+                      <div class="timeline-content">
                         <div class="font-weight-medium">
                           Submitted Application
                         </div>
                         <div class="text-caption">
-                          Application ID: BP-2025-0808-001
+                          Application ID: BP-2024-001
                         </div>
                         <div class="text-caption">
                           Submitted: January 15, 2024
@@ -180,78 +184,88 @@
                           is now in the review process.
                         </div>
                       </div>
-                      <template v-slot:opposite>
-                        <v-chip
-                          color="green"
-                          outlined
-                          class="timeline-status-chip"
-                          >Completed</v-chip
-                        >
-                      </template>
-                    </v-timeline-item>
+                      <v-chip
+                        color="green"
+                        outlined
+                        class="timeline-status-chip"
+                        >Completed</v-chip
+                      >
+                    </div>
 
-                    <v-timeline-item
-                      dot-color="#E5E7EB"
-                      size="small"
-                      icon="mdi-circle-outline"
-                    >
-                      <div>
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#2563EB" size="24"
+                            >mdi-check-circle</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
+                      </div>
+                      <div class="timeline-content">
                         <div class="font-weight-medium">
                           PDF Plan Verification
                         </div>
                         <div class="text-caption">
-                          Application ID: BP-2025-0808-001
+                          Application ID: BP-2024-001
                         </div>
-                        <div class="text-caption">Awaiting review</div>
+                        <div class="text-caption">
+                          Updated: January 16, 2024
+                        </div>
                         <div class="mt-1 text-caption">
-                          Plan verification will begin shortly. Your submitted
-                          building plans will be reviewed for completeness and
-                          accuracy.
+                          Minor revisions needed in the submitted building
+                          plans. Please check your email for detailed feedback.
                         </div>
                       </div>
-                      <template v-slot:opposite>
-                        <v-chip outlined class="timeline-status-chip"
-                          >Not Started</v-chip
-                        >
-                      </template>
-                    </v-timeline-item>
+                      <v-chip
+                        color="#F59E0B"
+                        outlined
+                        class="timeline-status-chip"
+                        >Minor Revision</v-chip
+                      >
+                    </div>
 
-                    <v-timeline-item
-                      dot-color="#E5E7EB"
-                      size="small"
-                      icon="mdi-circle-outline"
-                    >
-                      <div>
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#E5E7EB" size="24"
+                            >mdi-circle-outline</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
+                      </div>
+                      <div class="timeline-content">
                         <div class="font-weight-medium">
                           Evaluation of Plans
                         </div>
                         <div class="text-caption">
-                          Application ID: BP-2025-0808-001
+                          Application ID: BP-2024-001
                         </div>
                         <div class="text-caption">
-                          Pending verification completion
+                          Pending revision completion
                         </div>
                         <div class="mt-1 text-caption">
-                          Comprehensive evaluation will begin after PDF plan
-                          verification is complete.
+                          Comprehensive evaluation will begin after revision
+                          requirements are met.
                         </div>
                       </div>
-                      <template v-slot:opposite>
-                        <v-chip outlined class="timeline-status-chip"
-                          >Not Started</v-chip
-                        >
-                      </template>
-                    </v-timeline-item>
+                      <v-chip outlined class="timeline-status-chip"
+                        >Pending</v-chip
+                      >
+                    </div>
 
-                    <v-timeline-item
-                      dot-color="#E5E7EB"
-                      size="small"
-                      icon="mdi-circle-outline"
-                    >
-                      <div>
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#E5E7EB" size="24"
+                            >mdi-circle-outline</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line no-line"></div>
+                      </div>
+                      <div class="timeline-content">
                         <div class="font-weight-medium">Final Approval</div>
                         <div class="text-caption">
-                          Application ID: BP-2025-0808-001
+                          Application ID: BP-2024-001
                         </div>
                         <div class="text-caption">Awaiting previous stages</div>
                         <div class="mt-1 text-caption">
@@ -259,13 +273,11 @@
                           successful evaluation.
                         </div>
                       </div>
-                      <template v-slot:opposite>
-                        <v-chip outlined class="timeline-status-chip"
-                          >Not Started</v-chip
-                        >
-                      </template>
-                    </v-timeline-item>
-                  </v-timeline>
+                      <v-chip outlined class="timeline-status-chip"
+                        >Not Started</v-chip
+                      >
+                    </div>
+                  </div>
                 </v-card>
               </v-col>
             </v-row>
@@ -360,15 +372,53 @@ export default {
   line-height: 0;
 }
 
-.v-timeline--side-end .v-timeline-item__opposite {
-  /* This ensures the opposite content has a fixed width, preventing overflow */
-  max-width: 150px; /* Adjust this value as needed to fit the "Not Started" chip */
-  width: 150px; /* Ensures a consistent width */
-  text-align: right; /* Aligns the chip to the right within its container */
+/* Custom Timeline Styles */
+.custom-timeline-container {
+  padding-left: 20px;
 }
 
-/* Specific styling for the chip to align it neatly */
+.custom-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.timeline-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+  height: 100%;
+}
+
+.timeline-dot-wrapper {
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
+
+.timeline-line {
+  width: 2px;
+  background-color: #e5e7eb;
+  flex-grow: 1;
+  margin-top: 4px;
+}
+
+.timeline-content {
+  flex-grow: 1;
+  padding-right: 16px;
+}
+
 .timeline-status-chip {
-  margin-left: auto; /* Pushes the chip to the right side of the opposite slot */
+  margin-left: auto;
+  align-self: flex-start;
+  min-width: 110px;
+  text-align: center;
+  justify-content: center;
+}
+
+.no-line {
+  background-color: transparent !important;
 }
 </style>

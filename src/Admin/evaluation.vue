@@ -88,7 +88,7 @@
           </v-list-item>
           <v-list-item
             link
-            to="/building-permit"
+            to="/bpapplicants"
             class="py-1"
             active-class="v-list-item--active"
           >

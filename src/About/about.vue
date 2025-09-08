@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar flat color="#0000CC" dark height="88">
+    <v-app-bar flat color="#0000CC" dark height="88" app>
       <v-container
         fluid
         class="d-flex align-center justify-space-between py-0"
@@ -50,835 +50,330 @@
       </v-container>
     </v-app-bar>
 
-    <v-navigation-drawer app permanent>
-      <div class="d-flex align-center px-4" style="height: 57px">
-        <v-icon size="36" class="me-2" color="#007bff"
-          >mdi-office-building</v-icon
-        >
-        <div>
-          <div class="text-h7 font-weight-bold" style="line-height: 1.2">
-            Construction Permit
-          </div>
-          <div class="text-caption font-weight-regular" style="color: #6c757d">
-            Management System
+    <v-main class="no-scroll">
+      <v-card
+        flat
+        class="d-flex align-center justify-space-between px-6"
+        style="
+          background-color: white;
+          border-bottom: 1px solid lightgrey;
+          height: 50px;
+        "
+      >
+        <h3 class="mb-0 font-weight-bold">Building Permit Application</h3>
+
+        <div class="d-flex align-center">
+          <v-menu offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <div
+                class="notif-wrapper"
+                v-bind="attrs"
+                v-on="on"
+                role="button"
+                aria-label="Notifications"
+              >
+                <v-badge
+                  :content="notifications.length"
+                  :value="notifications.length"
+                  color="red"
+                  offset-x="8"
+                  offset-y="8"
+                  overlap
+                >
+                  <v-icon size="28" color="#4285F4">mdi-bell</v-icon>
+                </v-badge>
+              </div>
+            </template>
+            <v-list dense>
+              <v-subheader>NOTIFICATIONS</v-subheader>
+              <v-divider></v-divider>
+              <v-list-item v-if="notifications.length === 0">
+                <v-list-item-title>No new notifications</v-list-item-title>
+              </v-list-item>
+              <v-list-item
+                v-for="(item, index) in notifications"
+                :key="index"
+                link
+              >
+                <v-list-item-content>
+                  <v-list-item-title>{{ item.title }}</v-list-item-title>
+                  <v-list-item-subtitle>{{
+                    item.subtitle
+                  }}</v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <div class="text-caption text-right ml-3">
+            Building Permit Number<br />
+            <span class="font-weight-bold">BP-2024-001</span>
           </div>
         </div>
-      </div>
-      <div class="d-flex flex-column" style="height: calc(100vh - 88px - 57px)">
-        <v-list
-          nav
-          dense
-          class="py-0"
-          style="font-size: 14px; flex-grow: 1; overflow-y: auto"
-        >
-          <v-list-item link to="/dashboard" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-home-outline</v-icon>
-              <span>Dashboard</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item
-            link
-            to="/buildingpermits"
-            class="py-1"
-            active-class="v-list-item--active"
-          >
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
-            </div>
-          </v-list-item>
-        </v-list>
-        <v-list nav dense class="py-0 mt-auto" style="font-size: 14px">
-          <v-list-item link @click="logout" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-logout</v-icon>
-              <span>Logout</span>
-            </div>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
+      </v-card>
 
-    <v-main class="bg-grey-lighten-4">
-      <div class="d-flex justify-center">
-        <v-card
-          class="d-flex flex-column fill-height"
-          style="
-            width: 100%;
-            max-width: 1300px;
-            border-radius: 0;
-            box-shadow: none;
-            border-left: 1px solid rgba(0, 0, 0, 0.12);
-          "
-        >
-          <div
-            class="px-4 py-3 d-flex align-center justify-space-between"
-            style="height: 56px"
-          >
-            <div class="text-h6 font-weight-bold">
-              Building Permit Applicants
-            </div>
-            <div class="d-flex align-center">
-              <v-menu :close-on-content-click="false" location="bottom end">
-                <template v-slot:activator="{ props }">
-                  <v-badge
-                    color="red"
-                    :content="unreadNotificationsCount"
-                    overlap
-                    class="me-2"
-                    v-bind="props"
-                  >
-                    <v-icon size="20">mdi-bell</v-icon>
-                  </v-badge>
-                </template>
-                <v-card min-width="300" max-width="400">
-                  <v-card-title
-                    class="d-flex justify-space-between align-center"
-                  >
-                    <span class="text-h6">Applications to Evaluate</span>
-                    <v-btn icon @click="closeNotifications">
-                      <v-icon>mdi-close</v-icon>
-                    </v-btn>
-                  </v-card-title>
-                  <v-divider></v-divider>
-                  <v-list dense>
-                    <v-list-item
-                      v-for="(application, index) in applicationsToEvaluate"
-                      :key="index"
-                      class="py-2"
-                    >
-                      <template v-slot:prepend>
-                        <v-avatar
-                          size="40"
-                          :color="getAvatarColor(application.initials)"
-                          class="font-weight-bold"
-                          >{{ application.initials }}</v-avatar
-                        >
-                      </template>
-                      <v-list-item-title class="font-weight-bold">
-                        {{ application.name }}
-                      </v-list-item-title>
-                      <v-list-item-subtitle class="text-caption">
-                        {{ application.applicationId }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle class="text-caption mt-1">
-                        {{ application.message }}
-                      </v-list-item-subtitle>
-                      <v-list-item-subtitle class="text-caption mt-1">
-                        {{ application.time }}
-                      </v-list-item-subtitle>
-                      <template v-slot:append>
-                        <v-chip
-                          :color="getStatusColor(application.status)"
-                          size="small"
-                          label
-                          >{{ application.status }}</v-chip
-                        >
-                      </template>
-                    </v-list-item>
-                  </v-list>
-                  <v-divider></v-divider>
-                  <v-card-actions class="d-flex justify-center">
-                    <v-btn
-                      variant="text"
-                      color="blue"
-                      to="/building-permit"
-                      class="text-none"
-                    >
-                      View All Applications
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-menu>
-              <v-btn text to="/profile" class="profile-btn">
-                <v-avatar size="32" class="mx-2">
-                  <v-img alt="Charlene" src="@/assets/charlene.jpg"></v-img>
-                </v-avatar>
-                <div class="d-flex flex-column text-left">
-                  <span
-                    class="text-caption font-weight-bold"
-                    style="color: #555; white-space: nowrap"
-                  >
-                    Charlene Lumanta
-                  </span>
-                  <span
-                    class="text-caption font-weight-medium"
-                    style="color: #888; white-space: nowrap"
-                  >
-                    Mechanical Engineer
-                  </span>
-                </div>
-              </v-btn>
-            </div>
-          </div>
-          <v-divider></v-divider>
-          <div class="d-flex flex-grow-1 pa-4 bg-grey-lighten-4">
-            <div class="d-flex flex-column" style="flex: 2; gap: 16px">
-              <v-card style="border-radius: 8px">
-                <div class="pa-4">
-                  <div class="d-flex align-center mb-2">
-                    <v-icon class="me-2">mdi-account-details-outline</v-icon>
-                    <div class="text-subtitle-1 font-weight-bold">
-                      Applicant Information
-                    </div>
-                  </div>
-                  <v-divider class="mb-3"></v-divider>
-                  <v-row dense>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Applicant Name:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.applicantName }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Project Name:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.projectName }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12">
-                      <div class="text-caption text-grey-darken-1">
-                        Project Location:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.projectLocation }}
-                      </div>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-card>
-
-              <v-card style="border-radius: 8px">
-                <div class="pa-4">
-                  <div class="d-flex align-center mb-2">
-                    <v-icon class="me-2">mdi-home-city-outline</v-icon>
-                    <div class="text-subtitle-1 font-weight-bold">
-                      Property Details
-                    </div>
-                  </div>
-                  <v-divider class="mb-3"></v-divider>
-                  <v-row dense>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Property Type:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.propertyType }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Building Use:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.buildingUse }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Floor Area:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.floorArea }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Number of Floors:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.numberOfFloors }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Property Address:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.propertyAddress }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <div class="text-caption text-grey-darken-1">
-                        Lot Area:
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.propertyDetails.lotArea }}
-                      </div>
-                    </v-col>
-                  </v-row>
-                </div>
-              </v-card>
-
-              <v-card style="border-radius: 8px">
-                <div class="pa-4">
-                  <div class="d-flex align-center mb-2">
-                    <v-icon class="me-2">mdi-file-download-outline</v-icon>
-                    <div class="text-subtitle-1 font-weight-bold">
-                      Survey Plans
-                    </div>
-                  </div>
-                  <v-divider class="mb-3"></v-divider>
-                  <div class="d-flex flex-column" style="gap: 8px">
-                    <v-card
-                      v-for="(plan, index) in selectedApplicant.documents
-                        .surveyPlans"
-                      :key="index"
-                      class="py-2 px-3"
-                    >
-                      <div class="d-flex align-center justify-space-between">
-                        <div class="d-flex align-center">
-                          <v-icon color="red">mdi-file-pdf-box</v-icon>
-                          <div class="ms-3">
-                            <div class="font-weight-medium">
-                              {{ plan.name }}
-                            </div>
-                            <div class="text-caption text-grey-darken-1">
-                              {{ plan.description }} - {{ plan.size }} MB
-                            </div>
-                          </div>
-                        </div>
-                        <v-btn
-                          color="blue"
-                          variant="flat"
-                          size="small"
-                          @click="evaluateDocument(plan)"
-                          >Evaluate</v-btn
-                        >
-                      </div>
-                    </v-card>
-                  </div>
-                </div>
-              </v-card>
-            </div>
-
-            <div
-              class="d-flex flex-column"
-              style="flex: 1; margin-left: 16px; gap: 16px"
+      <v-container fluid class="pa-0 content-area">
+        <v-row no-gutters class="fill-height">
+          <v-col cols="12" md="3" class="pa-0">
+            <v-card
+              flat
+              class="pa-4 quick-guide-card"
+              style="
+                border-right: 1px solid lightgrey;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+              "
             >
-              <v-card style="border-radius: 8px">
-                <div class="pa-4">
-                  <div class="d-flex align-center mb-2">
-                    <v-icon class="me-2">mdi-text-box-outline</v-icon>
-                    <div class="text-subtitle-1 font-weight-bold">
-                      Application Summary
-                    </div>
+              <div>
+                <h4 class="mb-2">Quick Guide</h4>
+                <div class="text-subtitle-2 mb-4">
+                  Follow these steps to complete your application
+                </div>
+                <div
+                  v-for="(step, index) in steps"
+                  :key="index"
+                  class="quick-guide-item mb-3"
+                >
+                  <v-avatar color="#2563EB" size="30" class="white--text mr-3">
+                    {{ index + 1 }}
+                  </v-avatar>
+                  <div class="font-weight-medium text-body-2">
+                    {{ step }}
                   </div>
-                  <v-divider class="mb-3"></v-divider>
-                  <v-row dense>
-                    <v-col cols="12">
-                      <div class="text-caption text-grey-darken-1">
-                        Application Number
+                </div>
+                <v-btn block color="#2563EB" class="mt-2 white--text">
+                  Download Complete Checklist
+                </v-btn>
+              </div>
+              <div>
+                <v-btn
+                  block
+                  color="white"
+                  class="white--text"
+                  @click="handleLogout"
+                >
+                  Logout
+                </v-btn>
+              </div>
+            </v-card>
+          </v-col>
+
+          <v-col cols="12" md="9" class="pa-2">
+            <v-row>
+              <v-col
+                cols="12"
+                sm="4"
+                v-for="(card, i) in cards"
+                :key="i"
+                class="pa-2"
+              >
+                <v-card
+                  outlined
+                  class="pa-4 text-center d-flex flex-column align-center justify-center"
+                  style="height: 250px"
+                >
+                  <v-icon :color="card.color" size="70">{{ card.icon }}</v-icon>
+                  <div class="font-weight-semibold mt-2">{{ card.title }}</div>
+                  <v-btn
+                    :color="card.color"
+                    class="mt-4 white--text"
+                    @click="handleAction(card.action)"
+                  >
+                    {{ card.button }}
+                  </v-btn>
+                </v-card>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12" class="pa-2">
+                <v-card outlined class="pa-4">
+                  <h4 class="mb-2">Application Status Tracker</h4>
+                  <div class="custom-timeline-container">
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#2563EB" size="24"
+                            >mdi-check-circle</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
                       </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.applicationId }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12">
-                      <div class="text-caption text-grey-darken-1">Type</div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.type }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12">
-                      <div class="text-caption text-grey-darken-1">
-                        Processing Fee
-                      </div>
-                      <div class="text-caption font-weight-medium">
-                        {{ selectedApplicant.processingFee }}
-                      </div>
-                    </v-col>
-                    <v-col cols="12">
-                      <div class="text-caption text-grey-darken-1">
-                        Payment Status
+                      <div class="timeline-content">
+                        <div class="font-weight-medium">
+                          Submitted Application
+                        </div>
+                        <div class="text-caption">
+                          Application ID: BP-2024-001
+                        </div>
+                        <div class="text-caption">
+                          Submitted: January 15, 2024
+                        </div>
+                        <div class="mt-1 text-caption">
+                          Your application has been successfully submitted and
+                          is now in the review process.
+                        </div>
                       </div>
                       <v-chip
-                        :color="selectedApplicant.paymentStatusColor"
-                        size="small"
-                        variant="flat"
-                        >{{ selectedApplicant.paymentStatus }}</v-chip
+                        color="green"
+                        outlined
+                        class="timeline-status-chip"
+                        >Completed</v-chip
                       >
-                    </v-col>
-                  </v-row>
-                  <div class="text-caption mt-4">
-                    <strong>Note:</strong> Payment will be processed after plan
-                    evaluation is complete. You will be notified once the
-                    evaluation is done.
-                  </div>
-                </div>
-              </v-card>
-
-              <v-card style="border-radius: 8px">
-                <div class="pa-4">
-                  <div class="d-flex align-center mb-2">
-                    <v-icon class="me-2">mdi-list-box-outline</v-icon>
-                    <div class="text-subtitle-1 font-weight-bold">
-                      Application Timeline
                     </div>
-                  </div>
-                  <v-divider class="mb-3"></v-divider>
-                  <v-timeline side="end" align="start" density="compact">
-                    <v-timeline-item
-                      v-for="(event, index) in selectedApplicant.timeline"
-                      :key="index"
-                      :dot-color="event.color"
-                      size="small"
-                      :fill-dot="event.filled"
-                      class="pb-0"
-                    >
-                      <div class="text-caption font-weight-bold">
-                        {{ event.title }}
+
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#2563EB" size="24"
+                            >mdi-check-circle</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
                       </div>
-                      <div class="text-caption">{{ event.date }}</div>
-                    </v-timeline-item>
-                  </v-timeline>
-                </div>
-              </v-card>
-            </div>
-          </div>
-        </v-card>
-      </div>
-    </v-main>
+                      <div class="timeline-content">
+                        <div class="font-weight-medium">
+                          PDF Plan Verification
+                        </div>
+                        <div class="text-caption">
+                          Application ID: BP-2024-001
+                        </div>
+                        <div class="text-caption">
+                          Updated: January 16, 2024
+                        </div>
+                        <div class="mt-1 text-caption">
+                          Minor revisions needed in the submitted building
+                          plans. Please check your email for detailed feedback.
+                        </div>
+                      </div>
+                      <v-chip
+                        color="#F59E0B"
+                        outlined
+                        class="timeline-status-chip"
+                        >Minor Revision</v-chip
+                      >
+                    </div>
 
-    <v-dialog v-model="isEvaluationModalVisible" width="90%">
-      <v-card class="pa-4 rounded-lg">
-        <v-card-title class="d-flex align-center justify-space-between pb-0">
-          <div class="text-h6 font-weight-bold">Standard Plan Evaluation</div>
-          <v-btn icon @click="isEvaluationModalVisible = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-card-title>
-        <v-card-text>
-          <v-row>
-            <v-col cols="12" md="8">
-              <div class="text-subtitle-1 font-weight-bold mb-2">
-                {{ currentEvaluationPlan.name }}
-              </div>
-              <v-img
-                :src="mockPlanImage"
-                contain
-                class="rounded-lg border-sm"
-              ></v-img>
-            </v-col>
-            <v-col cols="12" md="4">
-              <v-form @submit.prevent="submitEvaluation">
-                <div class="mb-4">
-                  <div class="text-subtitle-1 font-weight-bold mb-2">
-                    Mechanical Requirements
-                  </div>
-                  <v-checkbox
-                    v-for="(req, index) in mechanicalRequirements"
-                    :key="index"
-                    v-model="evaluationData.requirements"
-                    :label="req.label"
-                    :value="req.value"
-                    density="compact"
-                    hide-details
-                  ></v-checkbox>
-                </div>
-                <div class="mb-4">
-                  <div class="text-subtitle-1 font-weight-bold mb-2">
-                    Comments/Feedback
-                  </div>
-                  <v-textarea
-                    v-model="evaluationData.comments"
-                    placeholder="Add your comments here..."
-                    variant="outlined"
-                    rows="3"
-                    hide-details
-                  ></v-textarea>
-                </div>
-                <div class="mb-4">
-                  <div class="text-subtitle-1 font-weight-bold mb-2">
-                    Assessment Fee
-                  </div>
-                  <v-radio-group
-                    v-model="evaluationData.status"
-                    hide-details
-                    inline
-                  >
-                    <v-radio label="Approved" value="approved"></v-radio>
-                    <v-radio label="For Revision" value="forRevision"></v-radio>
-                  </v-radio-group>
-                </div>
-                <div class="d-flex flex-column" style="gap: 4px">
-                  <div class="d-flex justify-space-between">
-                    <div class="text-caption text-grey-darken-1">
-                      Mechanical Plan Review
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#E5E7EB" size="24"
+                            >mdi-circle-outline</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line"></div>
+                      </div>
+                      <div class="timeline-content">
+                        <div class="font-weight-medium">
+                          Evaluation of Plans
+                        </div>
+                        <div class="text-caption">
+                          Application ID: BP-2024-001
+                        </div>
+                        <div class="text-caption">
+                          Pending revision completion
+                        </div>
+                        <div class="mt-1 text-caption">
+                          Comprehensive evaluation will begin after revision
+                          requirements are met.
+                        </div>
+                      </div>
+                      <v-chip outlined class="timeline-status-chip"
+                        >Pending</v-chip
+                      >
                     </div>
-                    <div class="text-caption font-weight-medium">₱500.00</div>
-                  </div>
-                  <div class="d-flex justify-space-between">
-                    <div class="text-caption text-grey-darken-1">
-                      Processing Fee
+
+                    <div class="custom-timeline-item">
+                      <div class="timeline-stepper">
+                        <div class="timeline-dot-wrapper">
+                          <v-icon color="#E5E7EB" size="24"
+                            >mdi-circle-outline</v-icon
+                          >
+                        </div>
+                        <div class="timeline-line no-line"></div>
+                      </div>
+                      <div class="timeline-content">
+                        <div class="font-weight-medium">Final Approval</div>
+                        <div class="text-caption">
+                          Application ID: BP-2024-001
+                        </div>
+                        <div class="text-caption">Awaiting previous stages</div>
+                        <div class="mt-1 text-caption">
+                          Final approval and permit issuance will proceed after
+                          successful evaluation.
+                        </div>
+                      </div>
+                      <v-chip outlined class="timeline-status-chip"
+                        >Not Started</v-chip
+                      >
                     </div>
-                    <div class="text-caption font-weight-medium">₱2,500.00</div>
                   </div>
-                  <v-divider class="my-1"></v-divider>
-                  <div class="d-flex justify-space-between font-weight-bold">
-                    <div class="text-subtitle-2">Total Amount</div>
-                    <div class="text-subtitle-2">₱3,000.00</div>
-                  </div>
-                </div>
-                <v-btn
-                  type="submit"
-                  color="blue"
-                  variant="flat"
-                  block
-                  class="mt-4"
-                  >Submit Evaluation</v-btn
-                >
-              </v-form>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
   </v-app>
 </template>
 
-<script setup>
-import { ref, computed } from "vue";
-
-// Hardcoded data to simulate a backend API response. In a real application, this data would be fetched.
-const applicationsToEvaluate = ref([
-  {
-    name: "Jin Degusman",
-    initials: "JD",
-    applicationId: "BP-2024-000123-T",
-    message: "Building permit application requires mechanical evaluation",
-    time: "2 days ago",
-    status: "Verified",
-    read: false,
-  },
-  {
-    name: "David Tolo...",
-    initials: "DT",
-    applicationId: "BP-2024-000567-T",
-    message: "Building permit application requires mechanical evaluation",
-    time: "3 days ago",
-    status: "Verified",
-    read: false,
-  },
-  {
-    name: "Jennifer Nayda",
-    initials: "JN",
-    applicationId: "BP-2024-000910-T",
-    message: "Building permit application requires mechanical evaluation",
-    time: "4 days ago",
-    status: "Verified",
-    read: false,
-  },
-]);
-
-// More comprehensive mock data for the main content area
-const applicants = ref([
-  {
-    id: 1,
-    applicantName: "Jim Deguzman",
-    initials: "JD",
-    status: "Pending",
-    applicationId: "BP-2024-000123-T",
-    projectName: "Commercial Building",
-    projectLocation: "San Felipe, Deca II Naga City",
-    propertyDetails: {
-      propertyType: "Commercial Building",
-      buildingUse: "Retail Store",
-      floorArea: "230 sq m",
-      numberOfFloors: "2 Floors",
-      propertyAddress: "456 Commercial Avenue, San Felipe, Deca I Naga City",
-      lotArea: "350 sq m",
-    },
-    documents: {
-      surveyPlans: [
+<script>
+export default {
+  name: "BuildingPermitPage",
+  data() {
+    return {
+      steps: [
+        "Fill up the Unified Application Form",
+        "Select Ancillary Forms",
+        "Download your filled up Forms",
+        "Upload building required documents",
+        "Wait for your application status",
+      ],
+      cards: [
         {
-          name: "Mechanical Plan",
-          description: "Required Document",
-          size: 2.5,
+          title: "Fill up Unified Application Form",
+          color: "#4F46E5",
+          icon: "mdi-file-document-edit",
+          action: "Fill up Form",
+          button: "Fill up Form",
+        },
+        {
+          title: "Select Required Ancillary Form",
+          color: "#9333EA",
+          icon: "mdi-file-check",
+          action: "Select Ancillary Form",
+          button: "Select Ancillary Form",
+        },
+        {
+          title: "Upload Requirements",
+          color: "#2563EB",
+          icon: "mdi-cloud-upload",
+          action: "Upload Documents",
+          button: "Upload Documents",
         },
       ],
-    },
-    type: "Building Permit",
-    processingFee: "₱2,500.00",
-    paymentStatus: "Pending Evaluation",
-    paymentStatusColor: "#FBF46D",
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "Jan 16, 2024 - 10:30 AM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Document Verified",
-        date: "Jan 16, 2024 - 2:15 PM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Under Plan Evaluation",
-        date: "Jan 17, 2024 - 9:00 AM",
-        color: "#FBF46D",
-        filled: true,
-      },
-      {
-        title: "Payment Processing",
-        date: "Pending",
-        color: "grey",
-        filled: false,
-      },
-      {
-        title: "Final Approval",
-        date: "Pending",
-        color: "grey",
-        filled: false,
-      },
-    ],
-  },
-  {
-    id: 2,
-    applicantName: "Maria Santos",
-    initials: "MS",
-    status: "Verified",
-    applicationId: "BP-2024-000567-T",
-    projectName: "Residential House",
-    projectLocation: "Magarao, Camarines Sur",
-    propertyDetails: {
-      propertyType: "Residential House",
-      buildingUse: "Single-family Home",
-      floorArea: "150 sq m",
-      numberOfFloors: "1 Floor",
-      propertyAddress: "789 Pine Street, Magarao, Camarines Sur",
-      lotArea: "250 sq m",
-    },
-    documents: {
-      surveyPlans: [
+      notifications: [
         {
-          name: "Mechanical Plan",
-          description: "Required Document",
-          size: 2.1,
+          title: "New update on your application",
+          subtitle: "Your application has been updated with a new status.",
         },
         {
-          name: "Electrical Plan",
-          description: "Required Document",
-          size: 1.5,
+          title: "Document submission reminder",
+          subtitle: "Please upload your pending documents for review.",
         },
       ],
-    },
-    type: "Building Permit",
-    processingFee: "₱1,800.00",
-    paymentStatus: "Payment Complete",
-    paymentStatusColor: "green",
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "Jan 10, 2024 - 9:00 AM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Document Verified",
-        date: "Jan 10, 2024 - 11:30 AM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Under Plan Evaluation",
-        date: "Jan 11, 2024 - 2:00 PM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Payment Processing",
-        date: "Jan 12, 2024 - 10:00 AM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Final Approval",
-        date: "Jan 15, 2024 - 3:00 PM",
-        color: "#B4FE98",
-        filled: true,
-      },
-    ],
+    };
   },
-  {
-    id: 3,
-    applicantName: "Juan Dela Cruz",
-    initials: "JD",
-    status: "Return",
-    applicationId: "BP-2024-000910-T",
-    projectName: "Office Renovation",
-    projectLocation: "Penafrancia Ave, Naga City",
-    propertyDetails: {
-      propertyType: "Office",
-      buildingUse: "Office Space",
-      floorArea: "500 sq m",
-      numberOfFloors: "5th Floor",
-      propertyAddress: "123 Business Center, Penafrancia Ave, Naga City",
-      lotArea: "1000 sq m",
+  methods: {
+    handleAction(actionName) {
+      console.log(`Action clicked: ${actionName}`);
     },
-    documents: {
-      surveyPlans: [
-        {
-          name: "Mechanical Plan",
-          description: "Required Document",
-          size: 5.0,
-        },
-      ],
+    handleLogout() {
+      console.log("User logged out");
     },
-    type: "Building Permit",
-    processingFee: "₱5,000.00",
-    paymentStatus: "Pending Evaluation",
-    paymentStatusColor: "red",
-    timeline: [
-      {
-        title: "Application Submitted",
-        date: "Jan 20, 2024 - 1:00 PM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Document Verified",
-        date: "Jan 20, 2024 - 4:00 PM",
-        color: "#B4FE98",
-        filled: true,
-      },
-      {
-        title: "Under Plan Evaluation",
-        date: "Jan 21, 2024 - 11:00 AM",
-        color: "#FBF46D",
-        filled: true,
-      },
-      {
-        title: "Returned for Corrections",
-        date: "Jan 22, 2024 - 9:00 AM",
-        color: "red",
-        filled: true,
-      },
-      {
-        title: "Payment Processing",
-        date: "Pending",
-        color: "grey",
-        filled: false,
-      },
-      {
-        title: "Final Approval",
-        date: "Pending",
-        color: "grey",
-        filled: false,
-      },
-    ],
   },
-]);
-
-// State for the selected applicant, initialized to the first one in the list
-const selectedApplicant = ref(applicants.value[0]);
-
-// New state for the evaluation modal
-const isEvaluationModalVisible = ref(false);
-const currentEvaluationPlan = ref({});
-const evaluationData = ref({
-  requirements: [],
-  comments: "",
-  status: "approved",
-});
-
-// Mock data for the evaluation form
-const mockPlanImage = ref(
-  "https://placehold.co/400x300/e0e0e0/000000?text=Mechanical+Plan+Placeholder"
-);
-const mechanicalRequirements = ref([
-  { label: "Layout of HVAC System and Specification", value: "hvac_system" },
-  { label: "Plumbing and Drainage Layout", value: "drainage_layout" },
-  { label: "Mechanical Sections", value: "mechanical_section" },
-  { label: "Energy Plan", value: "energy_plan" },
-]);
-
-const unreadNotificationsCount = computed(() => {
-  return applicationsToEvaluate.value.filter((n) => !n.read).length;
-});
-
-const closeNotifications = () => {
-  applicationsToEvaluate.value.forEach((notification) => {
-    notification.read = true;
-  });
-};
-
-const logout = () => {
-  // In a real app, this function would handle user authentication and session management.
-  // For example, it would call an API endpoint to invalidate the user's token.
-  console.log("User logged out.");
-};
-
-const getStatusColor = (status) => {
-  if (status === "Verified") return "green";
-  if (status === "Pending") return "orange";
-  if (status === "Return") return "red";
-  return "grey";
-};
-
-const getAvatarColor = (initials) => {
-  const colors = {
-    JD: "#007bff",
-    DT: "#17a2b8",
-    JN: "#6f42c4",
-    MS: "#ffc107",
-  };
-  return colors[initials] || "grey";
-};
-
-// Function to handle viewing an applicant's details
-const viewDetails = (applicant) => {
-  selectedApplicant.value = applicant;
-};
-
-// Functions to simulate document actions
-const evaluateDocument = (plan) => {
-  currentEvaluationPlan.value = plan;
-  isEvaluationModalVisible.value = true;
-  console.log(`Evaluating document: ${plan.name}`);
-};
-
-const viewDocument = (docName) => {
-  console.log(`Viewing document: ${docName}`);
-  // This would typically open the document in a new tab or modal.
-};
-
-// Function to handle the form submission
-const submitEvaluation = () => {
-  console.log("Evaluation Submitted:", evaluationData.value);
-  // Here you would send the data to a backend API
-  isEvaluationModalVisible.value = false;
-  // Reset the form data
-  evaluationData.value = {
-    requirements: [],
-    comments: "",
-    status: "approved",
-  };
 };
 </script>
 
@@ -888,13 +383,80 @@ const submitEvaluation = () => {
   font-weight: 500;
   font-size: 17px;
 }
-.profile-btn {
-  background-color: transparent !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  min-width: unset !important;
+.no-scroll {
+  overflow: hidden !important;
 }
-.v-list-item--active {
-  background-color: rgba(0, 0, 0, 0.04);
+.v-main.no-scroll {
+  height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+}
+.content-area {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 24px;
+}
+.quick-guide-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Notification wrapper: no background, no circle */
+.notif-wrapper {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+
+/* Custom Timeline Styles */
+.custom-timeline-container {
+  padding-left: 20px;
+}
+
+.custom-timeline-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.timeline-stepper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 16px;
+  height: 100%;
+}
+
+.timeline-dot-wrapper {
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
+
+.timeline-line {
+  width: 2px;
+  background-color: #e5e7eb;
+  flex-grow: 1;
+  margin-top: 4px;
+}
+
+.timeline-content {
+  flex-grow: 1;
+  padding-right: 16px;
+}
+
+.timeline-status-chip {
+  margin-left: auto;
+  align-self: flex-start;
+  min-width: 110px;
+  text-align: center;
+  justify-content: center;
+}
+
+.no-line {
+  background-color: transparent !important;
 }
 </style>

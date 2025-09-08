@@ -1,10 +1,9 @@
 <template>
-  <v-app>
+  <div class="page-wrapper">
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -38,7 +37,6 @@
             </div>
           </div>
         </div>
-
         <div class="d-none d-md-flex nav-links">
           <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
           <v-btn text class="mx-2" style="color: white" to="/services"
@@ -51,76 +49,13 @@
       </v-container>
     </v-app-bar>
 
-    <v-navigation-drawer app permanent>
-      <div class="d-flex align-center px-4" style="height: 57px">
-        <v-icon size="36" class="me-2" color="#007bff"
-          >mdi-office-building</v-icon
-        >
-        <div>
-          <div class="text-h7 font-weight-bold" style="line-height: 1.2">
-            Construction Permit
-          </div>
-          <div class="text-caption font-weight-regular" style="color: #6c757d">
-            Management System
-          </div>
-        </div>
-      </div>
-      <div class="d-flex flex-column" style="height: calc(100vh - 88px - 57px)">
-        <v-list
-          nav
-          dense
-          class="py-0"
-          style="font-size: 14px; flex-grow: 1; overflow-y: auto"
-        >
-          <v-list-item link to="/dashboard" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-home-outline</v-icon>
-              <span>Dashboard</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/buildingpermits" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
-            </div>
-          </v-list-item>
-        </v-list>
-        <v-list nav dense class="py-0 mt-auto" style="font-size: 14px">
-          <v-list-item link @click="logout" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-logout</v-icon>
-              <span>Logout</span>
-            </div>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
-
     <v-main class="bg-grey-lighten-4">
-      <div class="d-flex justify-center">
+      <v-container fluid class="pa-0">
         <v-card
           class="d-flex flex-column fill-height"
           style="
             width: 100%;
-            max-width: 1300px;
+            max-width: none;
             border-radius: 0;
             box-shadow: none;
           "
@@ -129,9 +64,7 @@
             class="px-4 py-3 d-flex align-center justify-space-between"
             style="height: 57px"
           >
-            <div class="text-h6 font-weight-bold">
-              Building Permit Applicants
-            </div>
+            <div class="text-h6 font-weight-bold">{{ pageTitle }}</div>
             <div class="d-flex align-center">
               <v-menu :close-on-content-click="false" location="bottom end">
                 <template v-slot:activator="{ props }">
@@ -205,7 +138,7 @@
                 </v-card>
               </v-menu>
 
-              <v-btn text to="/profile" class="profile-btn">
+              <v-btn text to="/ainformation" class="profile-btn">
                 <v-avatar size="32" class="mx-2">
                   <v-img alt="Julian" src="@/assets/ian.jpg"></v-img>
                 </v-avatar>
@@ -397,28 +330,30 @@
             </v-card>
           </v-card-text>
         </v-card>
-      </div>
+      </v-container>
     </v-main>
-  </v-app>
+  </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
-const fileInput = ref(null);
+
+// Data
+const userPosition = ref("Architect"); // This should be a dynamic value from your authentication state
 const search = ref("");
-const activeFilter = ref("All");
+const activeFilter = ref("Pending");
 const loading = ref(false);
 
-function onClick() {
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
-}
+const evaluatorTitles = {
+  Architect: "Architectural Plan",
+  "Mechanical Engineer": "Mechanical Plan",
+  "Plumbing Master": "Structural/Plumbing Plan",
+  "Electrical Engineer": "Electrical Plan",
+};
 
 const applicationsToEvaluate = ref([
   {
-    name: "Jin Degusman",
+    name: "JM Degusman",
     initials: "JD",
     applicationId: "BP-2024-000123-T",
     message: "Building permit application requires architectural evaluation",
@@ -446,16 +381,6 @@ const applicationsToEvaluate = ref([
   },
 ]);
 
-const unreadNotificationsCount = computed(() => {
-  return applicationsToEvaluate.value.filter((n) => !n.read).length;
-});
-
-const closeNotifications = () => {
-  applicationsToEvaluate.value.forEach((notification) => {
-    notification.read = true;
-  });
-};
-
 const headers = [
   { title: "Applicant Name", key: "name", sortable: false },
   { title: "Application Number", key: "applicationNumber", sortable: false },
@@ -471,6 +396,7 @@ const applicants = ref([
     applicationNumber: "BP-2024-808123-T",
     dateSubmitted: "Jan 15, 2024",
     status: "Verified",
+    planType: "Architectural Plan",
   },
   {
     initials: "SG",
@@ -478,6 +404,7 @@ const applicants = ref([
     applicationNumber: "BP-2024-808234-T",
     dateSubmitted: "Jan 16, 2024",
     status: "Verified",
+    planType: "Architectural Plan",
   },
   {
     initials: "MP",
@@ -485,6 +412,7 @@ const applicants = ref([
     applicationNumber: "BP-2024-808345-T",
     dateSubmitted: "Jan 17, 2024",
     status: "Return",
+    planType: "Mechanical Plan",
   },
   {
     initials: "CL",
@@ -492,29 +420,72 @@ const applicants = ref([
     applicationNumber: "BP-2024-808456-T",
     dateSubmitted: "Jan 18, 2024",
     status: "Pending",
+    planType: "Structural/Plumbing Plan",
+  },
+  {
+    initials: "RB",
+    name: "Ramon Bautista",
+    applicationNumber: "BP-2024-808567-T",
+    dateSubmitted: "Jan 19, 2024",
+    status: "Pending",
+    planType: "Electrical Plan",
+  },
+  {
+    initials: "AS",
+    name: "Ana Santos",
+    applicationNumber: "BP-2024-808678-T",
+    dateSubmitted: "Jan 20, 2024",
+    status: "Pending",
+    planType: "Architectural Plan",
+  },
+  {
+    initials: "JL",
+    name: "Joseph Lim",
+    applicationNumber: "BP-2024-808789-T",
+    dateSubmitted: "Jan 21, 2024",
+    status: "Pending",
+    planType: "Mechanical Plan",
   },
 ]);
 
-const totalApplicants = computed(() => applicants.value.length);
+// Computed properties
+const pageTitle = computed(() => {
+  return evaluatorTitles[userPosition.value] || "General Plan";
+});
+
+const unreadNotificationsCount = computed(() => {
+  return applicationsToEvaluate.value.filter((n) => !n.read).length;
+});
+
+const filteredByRoleApplicants = computed(() => {
+  return applicants.value.filter(
+    (applicant) => applicant.planType === pageTitle.value
+  );
+});
+
+const totalApplicants = computed(() => filteredByRoleApplicants.value.length);
 const pendingApplicants = computed(
-  () => applicants.value.filter((a) => a.status === "Pending").length
+  () =>
+    filteredByRoleApplicants.value.filter((a) => a.status === "Pending").length
 );
 const verifiedApplicants = computed(
-  () => applicants.value.filter((a) => a.status === "Verified").length
+  () =>
+    filteredByRoleApplicants.value.filter((a) => a.status === "Verified").length
 );
 const returnApplicants = computed(
-  () => applicants.value.filter((a) => a.status === "Return").length
+  () =>
+    filteredByRoleApplicants.value.filter((a) => a.status === "Return").length
 );
 
 const filteredApplicants = computed(() => {
-  let filtered = applicants.value;
+  let filtered = filteredByRoleApplicants.value;
   if (search.value) {
     const searchTerm = search.value.toLowerCase();
     filtered = filtered.filter((applicant) =>
       applicant.name.toLowerCase().includes(searchTerm)
     );
   }
-  if (activeFilter.value !== "All" && activeFilter.value !== "Total") {
+  if (activeFilter.value !== "Total") {
     filtered = filtered.filter(
       (applicant) => applicant.status === activeFilter.value
     );
@@ -522,12 +493,18 @@ const filteredApplicants = computed(() => {
   return filtered;
 });
 
-const handleUploadClick = () => {
-  fileInput.value.click();
-};
+// Methods
+function onClick() {
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+  }, 2000);
+}
 
-const logout = () => {
-  console.log("Logged out");
+const closeNotifications = () => {
+  applicationsToEvaluate.value.forEach((notification) => {
+    notification.read = true;
+  });
 };
 
 const getStatusColor = (status) => {
@@ -551,8 +528,10 @@ const getAvatarColor = (initials) => {
     AS: "#17a2b8",
     JL: "#e83e8c",
     MR: "#fd7e14",
-    AL: "#20c997",
-    DC: "#6c757d",
+    AP: "#007bff",
+    CT: "#17a2b8",
+    EV: "#6f42c4",
+    FB: "#20c997",
   };
   return colors[initials] || "grey";
 };
@@ -562,22 +541,22 @@ const viewDetails = (item) => {
 };
 
 const filterByStatus = (status) => {
-  if (status === "Total") {
-    activeFilter.value = "All";
-  } else {
-    activeFilter.value = status;
-  }
+  activeFilter.value = status;
 };
 </script>
 
 <style scoped>
+.page-wrapper {
+  background-color: rgb(255, 255, 255);
+  min-height: 100vh;
+}
+
 .nav-links .v-btn {
   text-transform: none !important;
   font-weight: 500;
   font-size: 17px;
 }
 
-/* This is the new CSS rule to hide the button's visual elements */
 .profile-btn {
   background-color: transparent !important;
   box-shadow: none !important;

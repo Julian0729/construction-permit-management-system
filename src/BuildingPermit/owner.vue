@@ -3,8 +3,7 @@
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -54,18 +53,20 @@
       <v-container fluid class="pa-0">
         <v-card
           flat
-          class="d-flex align-center justify-space-between pl-6 mb-4"
+          class="d-flex align-center pl-6 mb-4"
           style="
             background-color: white;
             border: 1px solid lightgrey;
             height: 50px;
           "
         >
-          <h3 class="mb-0 font-weight-bold">Building Permit Application</h3>
+          <h3 class="mb-0 font-weight-bold page-title-responsive">
+            Building Permit Application
+          </h3>
         </v-card>
 
         <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
-          <v-stepper v-model="currentStep" alt-labels class="mb-4" flat>
+          <v-stepper v-model="currentStep" alt-labels flat class="mb-4">
             <v-stepper-header>
               <v-stepper-item
                 title="Application"
@@ -81,6 +82,7 @@
                 title="Owner/Applicant"
                 value="2"
                 color="blue"
+                :complete="true"
               ></v-stepper-item>
               <v-divider
                 style="border-width: 2px; border-color: blue"
@@ -103,153 +105,165 @@
             </v-stepper-header>
           </v-stepper>
 
-          <v-form ref="form" @submit.prevent="validateAndProceed">
-            <v-card class="my-2 pa-4">
-              <v-card-title class="text-h6">OWNER/APPLICANT</v-card-title>
-              <v-card-text class="pa-2">
-                <v-row dense>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">Last Name</p>
-                    <v-text-field
-                      v-model="lastName"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">First Name</p>
-                    <v-text-field
-                      v-model="firstName"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">Middle Initial</p>
-                    <v-text-field
-                      v-model="middleInitial"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">TIN</p>
-                    <v-text-field
-                      v-model="tin"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
+          <v-card class="my-2 pa-4">
+            <v-card-title class="text-h6 card-title-responsive"
+              >APPLICATION DETAILS</v-card-title
+            >
+            <v-card-text>
+              <v-form ref="form" @submit.prevent="validateAndProceed">
+                <v-card class="mb-4">
+                  <v-card-title class="text-h6 card-title-responsive"
+                    >OWNER/APPLICANT</v-card-title
+                  >
+                  <v-card-text>
+                    <v-row dense>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">Last Name</p>
+                        <v-text-field
+                          v-model="lastName"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">First Name</p>
+                        <v-text-field
+                          v-model="firstName"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">Middle Initial</p>
+                        <v-text-field
+                          v-model="middleInitial"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">TIN</p>
+                        <v-text-field
+                          v-model="tin"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
 
-            <v-card class="my-2 pa-4">
-              <v-card-title class="text-h6"
-                >FOR CONSTRUCTION OWNED BY AN ENTERPRISE</v-card-title
-              >
-              <v-card-text class="pa-2">
-                <v-radio-group
-                  v-model="ownedByEnterprise"
-                  :rules="[rules.requiredRadio]"
-                  mandatory
-                >
-                  <v-row dense class="d-flex align-center">
-                    <v-col cols="12" md="6">
-                      <v-radio
-                        label="Owned by an Enterprise"
-                        value="enterprise"
-                      ></v-radio>
-                    </v-col>
-                    <v-col cols="12" md="6">
-                      <p class="input-label">Form of Ownership</p>
-                      <v-text-field
-                        v-model="formOfOwnership"
-                        variant="outlined"
-                        class="textfield-50"
-                        density="compact"
-                        :disabled="ownedByEnterprise !== 'enterprise'"
-                        :rules="[
-                          ownedByEnterprise === 'enterprise'
-                            ? rules.required
-                            : true,
-                        ]"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-radio-group>
-              </v-card-text>
-            </v-card>
+                <v-card class="mb-4">
+                  <v-card-title class="text-h6 card-title-responsive"
+                    >FOR CONSTRUCTION OWNED BY AN ENTERPRISE</v-card-title
+                  >
+                  <v-card-text>
+                    <v-row dense class="d-flex align-center">
+                      <v-col cols="12" md="6">
+                        <v-radio-group
+                          v-model="ownedByEnterprise"
+                          :rules="[rules.requiredRadio]"
+                          mandatory
+                          class="mt-0 pt-0"
+                          hide-details
+                        >
+                          <v-radio
+                            label="Owned by an Enterprise"
+                            value="enterprise"
+                          ></v-radio>
+                        </v-radio-group>
+                      </v-col>
+                      <v-col cols="12" md="6">
+                        <p class="input-label">Form of Ownership</p>
+                        <v-text-field
+                          v-model="formOfOwnership"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :disabled="ownedByEnterprise !== 'enterprise'"
+                          :rules="[
+                            ownedByEnterprise === 'enterprise'
+                              ? rules.required
+                              : true,
+                          ]"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
 
-            <v-card class="my-2 pa-4">
-              <v-card-title class="text-h6">ADDRESS</v-card-title>
-              <v-card-text class="pa-2">
-                <v-row dense>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">No. Street</p>
-                    <v-text-field
-                      v-model="street"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">Barangay</p>
-                    <v-text-field
-                      v-model="barangay"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">City/Municipality</p>
-                    <v-text-field
-                      v-model="city"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6">
-                    <p class="input-label">Contact No.</p>
-                    <v-text-field
-                      v-model="contactNo"
-                      variant="outlined"
-                      class="textfield-50"
-                      density="compact"
-                      :rules="[rules.required]"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-
-            <div class="d-flex justify-end">
-              <v-btn
-                color="blue-grey-lighten-4"
-                dark
-                class="mt-4 mr-2"
-                to="/application"
-                >Back</v-btn
-              >
-              <v-btn color="blue" dark class="mt-4" @click="validateAndProceed"
-                >Next</v-btn
-              >
-            </div>
-          </v-form>
+                <v-card>
+                  <v-card-title class="text-h6 card-title-responsive"
+                    >ADDRESS</v-card-title
+                  >
+                  <v-card-text>
+                    <v-row dense>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">No. Street</p>
+                        <v-text-field
+                          v-model="street"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">Barangay</p>
+                        <v-text-field
+                          v-model="barangay"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">City/Municipality</p>
+                        <v-text-field
+                          v-model="city"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="6">
+                        <p class="input-label">Contact No.</p>
+                        <v-text-field
+                          v-model="contactNo"
+                          variant="outlined"
+                          class="textfield-50"
+                          density="compact"
+                          :rules="[rules.required]"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+              </v-form>
+            </v-card-text>
+          </v-card>
+          <div class="d-flex justify-end">
+            <v-btn
+              color="blue-grey-lighten-4"
+              dark
+              class="mt-4 mr-2"
+              to="/application"
+              >Back</v-btn
+            >
+            <v-btn color="blue" dark class="mt-4" @click="validateAndProceed"
+              >Next</v-btn
+            >
+          </div>
         </v-container>
       </v-container>
     </v-main>
@@ -342,5 +356,21 @@ body,
 .my-2 {
   margin-top: 8px;
   margin-bottom: 8px;
+}
+
+/* Responsive styles */
+@media (max-width: 960px) {
+  .page-title-responsive {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .v-stepper-item .v-stepper-item__title {
+    display: none;
+  }
+  .card-title-responsive {
+    font-size: 1.15rem !important;
+  }
 }
 </style>

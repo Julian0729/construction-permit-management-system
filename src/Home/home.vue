@@ -2,8 +2,7 @@
   <div class="page-wrapper">
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
-        fluid
-        class="d-flex align-center justify-space-between py-0"
+        class="d-flex align-center justify-space-between py-0 px-6"
         style="max-width: 1600px"
       >
         <div class="d-flex align-center">
@@ -52,12 +51,7 @@
 
     <v-main>
       <v-container fluid class="pa-0">
-        <section
-          class="hero-section d-flex align-center justify-center"
-          :style="{
-            'background-image': `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('${backgroundImageUrl}')`,
-          }"
-        >
+        <section class="hero-section d-flex align-center justify-center">
           <v-container class="hero-content text-left">
             <h1 class="hero-title">
               One Stop Shop for<br />Construction Permits
@@ -66,7 +60,17 @@
               Fast, Efficient, and Convenient Permit Processing in Naga City
             </p>
             <div class="d-flex mt-6">
-              <v-btn color="#2962FF" dark large class="mr-4" to="/services">
+              <v-btn
+                outlined
+                large
+                color="grey-lighten-2"
+                class="mr-4"
+                @click="goToLogin"
+              >
+                <v-icon left>mdi-login</v-icon>
+                Sign In
+              </v-btn>
+              <v-btn color="#2962FF" dark large to="/services">
                 <v-icon left>mdi-file-edit-outline</v-icon>
                 Apply Now
               </v-btn>
@@ -78,20 +82,27 @@
   </div>
 </template>
 
- <script>
+<script>
+import nagaImage from "@/assets/naga.png";
+
 export default {
   name: "HomePage",
   data() {
     return {
-      // The background image URL provided by the user
-      backgroundImageUrl:
-        "https://upload.wikimedia.org/wikipedia/en/f/fb/Naga_City_Hall_front_%28J._Miranda_Avenue%2C_Naga%2C_Camarines_Sur%3B_04-15-2023%29.jpg",
+      backgroundImageUrl: nagaImage,
     };
+  },
+  methods: {
+    goToLogin() {
+      window.location.href = "/alogin";
+    },
   },
 };
 </script>
 
- <style scoped>
+<style scoped>
+/* ... (Existing styles remain the same for non-layout properties) ... */
+
 .page-wrapper {
   background-color: #f7f7f7;
   min-height: 100vh;
@@ -103,18 +114,36 @@ export default {
   font-size: 17px;
 }
 
+/* Hero section with local background image */
 .hero-section {
   width: 100%;
-  height: calc(100vh - 88px); /* Full height minus app bar height */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; /* Parallax effect */
+  min-height: calc(100vh - 88px);
+  background-image: url("@/assets/naga.png");
+
+  /* Retaining the fix to show the whole image */
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: white;
   padding: 0 16px;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.hero-section::before {
+  content: none;
 }
 
 .hero-content {
-  max-width: 1600px;
+  /* KEY CHANGE: Setting the max-width here aligns it with the App Bar content */
+  max-width: 1600px; /* Aligns with the 1600px set on the App Bar's v-container */
+  position: relative;
+  z-index: 2;
 }
 
 .hero-title {
@@ -123,6 +152,7 @@ export default {
   line-height: 1.2;
   margin-bottom: 12px;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 .hero-subtitle {
@@ -144,11 +174,17 @@ export default {
   height: 48px;
 }
 
+.v-btn.text-white {
+  color: white !important;
+  border-color: white;
+}
+
 /* Responsive adjustments */
 @media (max-width: 960px) {
   .hero-title {
     font-size: 2.5rem;
   }
+
   .hero-subtitle {
     font-size: 1rem;
   }

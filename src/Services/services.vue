@@ -3,8 +3,7 @@
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -226,5 +225,12 @@ export default {
   font-size: 1rem;
   border-radius: 8px;
   box-shadow: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 960px) {
+  .header-section h1 {
+    font-size: 1.75rem;
+  }
 }
 </style>

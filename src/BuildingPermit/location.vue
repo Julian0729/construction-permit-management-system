@@ -3,8 +3,7 @@
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
+        class="d-flex align-center justify-space-between py-0 px-6"
       >
         <div class="d-flex align-center">
           <v-img
@@ -61,7 +60,9 @@
             height: 50px;
           "
         >
-          <h3 class="mb-0 font-weight-bold">Building Permit Application</h3>
+          <h3 class="mb-0 font-weight-bold page-title-responsive">
+            Building Permit Application
+          </h3>
         </v-card>
 
         <v-container fluid class="px-4 mx-auto" style="max-width: 1300px">
@@ -103,141 +104,143 @@
             </v-stepper-header>
           </v-stepper>
 
-          <v-form ref="form" v-model="formValid">
-            <v-card class="my-2 pa-4">
-              <v-card-title class="text-h6"
-                >LOCATION OF CONSTRUCTION</v-card-title
-              >
-              <v-card-text>
-                <v-row dense>
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">BLK. No.</div>
-                    <v-text-field
-                      v-model="blkNo"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">TCT No.</div>
-                    <v-text-field
-                      v-model="tctNo"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">Current Tax Dec No.</div>
-                    <v-text-field
-                      v-model="taxDecNo"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">Street</div>
-                    <v-text-field
-                      v-model="street"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                    ></v-text-field>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">Barangay</div>
-                    <v-select
-                      v-model="barangay"
-                      :items="barangays"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                    ></v-select>
-                  </v-col>
-
-                  <v-col cols="12" sm="4">
-                    <div class="input-label">City/Municipal of</div>
-                    <v-text-field
-                      v-model="cityMunicipality"
-                      variant="outlined"
-                      density="compact"
-                      :rules="[rules.required]"
-                      style="height: 50px; min-height: 50px"
-                      disabled
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-            </v-card>
-
-            <v-card class="my-2 pa-4">
-              <v-card-title class="text-h6">SCOPE OF WORK</v-card-title>
-              <v-card-text>
-                <v-row dense class="gap-0">
-                  <v-col
-                    v-for="(item, i) in scopeOfWork"
-                    :key="i"
-                    cols="12"
-                    sm="4"
-                    class="py-0 my-0"
+          <v-card class="my-2 pa-4">
+            <v-card-text>
+              <v-form ref="form" v-model="formValid">
+                <v-card class="mb-4">
+                  <v-card-title class="text-h6 card-title-responsive"
+                    >LOCATION OF CONSTRUCTION</v-card-title
                   >
-                    <v-checkbox
-                      v-model="selectedScope"
-                      :label="item"
-                      :value="item"
-                      hide-details
-                      density="compact"
-                      class="my-0"
-                    ></v-checkbox>
+                  <v-card-text>
+                    <v-row dense>
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">BLK. No.</div>
+                        <v-text-field
+                          v-model="blkNo"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                        ></v-text-field>
+                      </v-col>
 
-                    <v-text-field
-                      v-if="
-                        item === 'Other (Specify)' &&
-                        selectedScope.includes('Other (Specify)')
-                      "
-                      v-model="otherDetails"
-                      label="Please specify"
-                      variant="outlined"
-                      density="compact"
-                      class="ml-6 my-1"
-                      :rules="[rules.requiredOther]"
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-                <div
-                  v-if="!selectedScope.length && formSubmitted"
-                  class="v-input__details"
-                  style="padding-top: 10px; color: #b00020"
-                >
-                  Please select at least one scope of work.
-                </div>
-              </v-card-text>
-            </v-card>
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">TCT No.</div>
+                        <v-text-field
+                          v-model="tctNo"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                        ></v-text-field>
+                      </v-col>
 
-            <div class="d-flex justify-end">
-              <v-btn
-                color="blue-grey-lighten-4"
-                dark
-                class="mt-4 mr-2"
-                to="/owner"
-                >Back</v-btn
-              >
-              <v-btn color="blue" dark class="mt-4" @click="nextStep"
-                >Next</v-btn
-              >
-            </div>
-          </v-form>
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">Current Tax Dec No.</div>
+                        <v-text-field
+                          v-model="taxDecNo"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">Street</div>
+                        <v-text-field
+                          v-model="street"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                        ></v-text-field>
+                      </v-col>
+
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">Barangay</div>
+                        <v-select
+                          v-model="barangay"
+                          :items="barangays"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                        ></v-select>
+                      </v-col>
+
+                      <v-col cols="12" sm="4">
+                        <div class="input-label">City/Municipal of</div>
+                        <v-text-field
+                          v-model="cityMunicipality"
+                          variant="outlined"
+                          density="compact"
+                          :rules="[rules.required]"
+                          style="height: 50px; min-height: 50px"
+                          disabled
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+                </v-card>
+
+                <v-card>
+                  <v-card-title class="text-h6 card-title-responsive"
+                    >SCOPE OF WORK</v-card-title
+                  >
+                  <v-card-text>
+                    <v-row dense>
+                      <v-col
+                        v-for="(item, i) in scopeOfWork"
+                        :key="i"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-checkbox
+                          v-model="selectedScope"
+                          :label="item"
+                          :value="item"
+                          hide-details
+                          density="compact"
+                        ></v-checkbox>
+
+                        <v-text-field
+                          v-if="
+                            item === 'Other (Specify)' &&
+                            selectedScope.includes('Other (Specify)')
+                          "
+                          v-model="otherDetails"
+                          label="Please specify"
+                          variant="outlined"
+                          density="compact"
+                          class="ml-6 my-1"
+                          :rules="[rules.requiredOther]"
+                        ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <div
+                      v-if="!selectedScope.length && formSubmitted"
+                      class="v-input__details"
+                      style="padding-top: 10px; color: #b00020"
+                    >
+                      Please select at least one scope of work.
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-form>
+            </v-card-text>
+          </v-card>
+          <div class="d-flex justify-end">
+            <v-btn
+              color="blue-grey-lighten-4"
+              dark
+              class="mt-4 mr-2"
+              to="/owner"
+              >Back</v-btn
+            >
+            <v-btn color="blue" dark class="mt-4" @click="nextStep">Next</v-btn>
+          </div>
         </v-container>
       </v-container>
     </v-main>
@@ -361,17 +364,25 @@ body,
   display: none;
 }
 
-.card-131 {
-  min-height: 131px;
-}
-
-.textfield-70 {
-  height: 70px;
-}
-
 .input-label {
   font-size: 0.75rem;
   color: rgba(0, 0, 0, 0.6);
   margin-bottom: 4px;
+}
+
+/* Responsive styles */
+@media (max-width: 960px) {
+  .page-title-responsive {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .v-stepper-item .v-stepper-item__title {
+    display: none;
+  }
+  .card-title-responsive {
+    font-size: 1.15rem !important;
+  }
 }
 </style>

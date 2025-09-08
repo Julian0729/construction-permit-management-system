@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- App Bar -->
     <v-app-bar flat color="#0000CC" dark height="88">
       <v-container
         fluid
@@ -24,18 +25,10 @@
             </div>
           </div>
         </div>
-        <div class="d-none d-md-flex nav-links">
-          <v-btn text class="mx-0" style="color: white" to="/home">Home</v-btn>
-          <v-btn text class="mx-0" style="color: white" to="/services"
-            >Services</v-btn
-          >
-          <v-btn text class="mx-0" style="color: white" to="/about"
-            >About</v-btn
-          >
-        </div>
       </v-container>
     </v-app-bar>
 
+    <!-- Main Content -->
     <v-main style="background-color: #f0f2f5">
       <v-container fluid class="fill-height d-flex align-center justify-center">
         <v-card width="400" class="pa-4">
@@ -47,6 +40,7 @@
             contain
             class="mx-auto mb-2"
           />
+
           <div class="text-center">
             <h3 class="font-weight-bold mb-1">Admin Login</h3>
             <p class="text-caption text-grey">
@@ -113,7 +107,6 @@
               class="mt-4"
               type="submit"
               :loading="loading"
-              to="/ainformation"
             >
               <v-icon left>mdi-arrow-right</v-icon> Sign In
             </v-btn>
@@ -132,9 +125,9 @@
               <a href="#" style="text-decoration: none; color: grey">Support</a>
             </small>
             <br />
-            <small class="text-grey"
-              >© 2023 Admin System. All rights reserved.</small
-            >
+            <small class="text-grey">
+              © 2023 Admin System. All rights reserved.
+            </small>
           </div>
         </v-card>
       </v-container>
@@ -144,9 +137,12 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
+    const router = useRouter();
+
     const username = ref("");
     const password = ref("");
     const role = ref(null);
@@ -160,21 +156,19 @@ export default {
     const login = async () => {
       error.value = "";
 
-      // Check for form validity
-      const form = document.querySelector("form");
-      if (form && !form.checkValidity()) {
-        form.reportValidity();
+      // Optional: Manual validation fallback
+      if (!username.value || !password.value || !role.value) {
+        error.value = "Please fill in all fields.";
         return;
       }
 
       loading.value = true;
 
-      // Fake API call simulation (replace with your real backend call)
+      // Fake authentication simulation
       setTimeout(() => {
         loading.value = false;
 
-        // Simple mock authentication logic
-        if (
+        const isValid =
           (username.value === "admin" &&
             password.value === "1234" &&
             role.value === "Administrative") ||
@@ -183,11 +177,19 @@ export default {
             role.value === "Engineer") ||
           (username.value === "architect" &&
             password.value === "pass123" &&
-            role.value === "Architect")
-        ) {
+            role.value === "Architect");
+
+        if (isValid) {
           alert(`✅ Login successful as ${role.value}!`);
-          // Redirect to dashboard or a role-specific page
-          window.location.href = "/dashboard";
+
+          // Redirection logic based on role
+          if (role.value === "Administrative") {
+            router.push("/dashboard");
+          } else if (role.value === "Architect") {
+            router.push("/buildingpermits");
+          } else if (role.value === "Engineer") {
+            router.push("/engineerportal"); // Customize if needed
+          }
         } else {
           error.value = "Invalid credentials or role.";
         }

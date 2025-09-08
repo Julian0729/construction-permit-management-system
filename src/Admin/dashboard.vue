@@ -86,7 +86,7 @@
               <span>Locational Clearance</span>
             </div>
           </v-list-item>
-          <v-list-item link to="/building-permit" class="py-1">
+          <v-list-item link to="/bpapplicants" class="py-1">
             <div class="d-flex align-center">
               <v-icon class="me-3">mdi-file-document-outline</v-icon>
               <span>Building Permit</span>
