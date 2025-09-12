@@ -17,22 +17,12 @@
           />
           <div>
             <div
-              style="
-                font-size: 12px;
-                font-weight: 400;
-                color: white;
-                line-height: 1.2;
-              "
+              style="font-size: 12px; font-weight: 400; color: white; line-height: 1.2"
             >
               REPUBLIC OF THE PHILIPPINES
             </div>
             <div
-              style="
-                font-size: 15px;
-                font-weight: 700;
-                color: white;
-                line-height: 1.2;
-              "
+              style="font-size: 15px; font-weight: 700; color: white; line-height: 1.2"
             >
               CITY GOVERNMENT OF NAGA
             </div>
@@ -40,12 +30,8 @@
         </div>
         <div class="d-none d-md-flex nav-links">
           <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
-          <v-btn text class="mx-2" style="color: white" to="/services"
-            >Services</v-btn
-          >
-          <v-btn text class="mx-2" style="color: white" to="/about"
-            >About</v-btn
-          >
+          <v-btn text class="mx-2" style="color: white" to="/services">Services</v-btn>
+          <v-btn text class="mx-2" style="color: white" to="/about">About</v-btn>
         </div>
       </v-container>
     </v-app-bar>
@@ -63,9 +49,9 @@
                   </div>
                   <h3 class="feature-title">Time-Saving</h3>
                   <p class="feature-description">
-                    Save valuable time by processing your permits online. No
-                    more waiting in long queues – complete everything from the
-                    comfort of your home or office.
+                    Save valuable time by processing your permits online. No more waiting
+                    in long queues – complete everything from the comfort of your home or
+                    office.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -74,9 +60,8 @@
                   </div>
                   <h3 class="feature-title">24/7 Access</h3>
                   <p class="feature-description">
-                    Access our services around the clock, every day of the year.
-                    Submit applications and track progress at any time that
-                    suits your schedule.
+                    Access our services around the clock, every day of the year. Submit
+                    applications and track progress at any time that suits your schedule.
                   </p>
                 </v-col>
                 <v-col cols="12" sm="4" class="text-center">
@@ -85,9 +70,8 @@
                   </div>
                   <h3 class="feature-title">Real-time Updates</h3>
                   <p class="feature-description">
-                    Stay informed with instant notifications about your
-                    application status. Receive timely updates and never miss
-                    important information.
+                    Stay informed with instant notifications about your application
+                    status. Receive timely updates and never miss important information.
                   </p>
                 </v-col>
               </v-row>
@@ -121,16 +105,12 @@
                     append-inner-icon="mdi-eye-off"
                   ></v-text-field>
 
-                  <div
-                    class="d-flex justify-space-between align-center mt-1 mb-4"
-                  >
+                  <div class="d-flex justify-space-between align-center mt-1 mb-4">
                     <v-checkbox-btn
                       label="Remember me"
                       class="ma-0 pa-0"
                     ></v-checkbox-btn>
-                    <a
-                      href="#"
-                      class="text-primary text-caption font-weight-medium"
+                    <a href="#" class="text-primary text-caption font-weight-medium"
                       >Forgot password?</a
                     >
                   </div>
@@ -140,18 +120,14 @@
                     color="#4A00E0"
                     size="large"
                     class="login-btn"
-                    to="/occupancy"
+                    to="/opportal"
                   >
                     Login
                   </v-btn>
 
                   <div class="text-center mt-6">
-                    <span class="text-grey-darken-1"
-                      >Don't have an account?</span
-                    >
-                    <a href="#" class="text-primary font-weight-bold ms-1"
-                      >Sign up</a
-                    >
+                    <span class="text-grey-darken-1">Don't have an account?</span>
+                    <a href="#" class="text-primary font-weight-bold ms-1">Sign up</a>
                   </div>
                 </v-form>
               </v-card-text>

@@ -1,136 +1,19 @@
 <template>
   <v-app>
-    <v-app-bar flat color="#0000CC" dark height="88">
-      <v-container
-        fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
-      >
-        <div class="d-flex align-center">
-          <v-img
-            src="https://www2.naga.gov.ph/wp-content/uploads/2022/05/Naga_City_Official_Seal-1.png"
-            alt="LGU Seal"
-            width="85"
-            height="75"
-            contain
-            class="me-3"
-          />
-          <div>
-            <div
-              style="
-                font-size: 12px;
-                font-weight: 400;
-                color: white;
-                line-height: 1.2;
-              "
-            >
-              REPUBLIC OF THE PHILIPPINES
-            </div>
-            <div
-              style="
-                font-size: 15px;
-                font-weight: 700;
-                color: white;
-                line-height: 1.2;
-              "
-            >
-              CITY GOVERNMENT OF NAGA
-            </div>
-          </div>
-        </div>
-        <div class="d-none d-md-flex nav-links">
-          <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
-          <v-btn text class="mx-2" style="color: white" to="/services"
-            >Services</v-btn
-          >
-          <v-btn text class="mx-2" style="color: white" to="/about"
-            >About</v-btn
-          >
-        </div>
-      </v-container>
-    </v-app-bar>
-
-    <v-navigation-drawer app permanent>
-      <div class="d-flex align-center px-4" style="height: 57px">
-        <v-icon size="36" class="me-2" color="#007bff"
-          >mdi-office-building</v-icon
-        >
-        <div>
-          <div class="text-h7 font-weight-bold" style="line-height: 1.2">
-            Construction Permit
-          </div>
-          <div class="text-caption font-weight-regular" style="color: #6c757d">
-            Management System
-          </div>
-        </div>
-      </div>
-      <div class="d-flex flex-column" style="height: calc(100vh - 88px - 57px)">
-        <v-list
-          nav
-          dense
-          class="py-0"
-          style="font-size: 14px; flex-grow: 1; overflow-y: auto"
-        >
-          <v-list-item link to="/dashboard" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-home-outline</v-icon>
-              <span>Dashboard</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/bpapplicants" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
-            </div>
-          </v-list-item>
-        </v-list>
-        <v-list nav dense class="py-0 mt-auto" style="font-size: 14px">
-          <v-list-item link @click="logout" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-logout</v-icon>
-              <span>Logout</span>
-            </div>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
+    <AdminHeader />
+    <AdminNavigation />
 
     <v-main class="bg-grey-lighten-4">
       <div class="d-flex justify-center">
         <v-card
           class="d-flex flex-column fill-height"
-          style="
-            width: 100%;
-            max-width: 1300px;
-            border-radius: 0;
-            box-shadow: none;
-          "
+          style="width: 100%; max-width: 1300px; border-radius: 0; box-shadow: none"
         >
           <div
             class="px-4 py-3 d-flex align-center justify-space-between"
             style="height: 57px"
           >
-            <div class="text-h6 font-weight-bold">
-              Building Permit Applicants
-            </div>
+            <div class="text-h6 font-weight-bold">Building Permit Applicants</div>
             <div class="d-flex align-center">
               <v-menu :close-on-content-click="false" location="bottom end">
                 <template v-slot:activator="{ props }">
@@ -145,9 +28,7 @@
                   </v-badge>
                 </template>
                 <v-card min-width="300" max-width="400">
-                  <v-card-title
-                    class="d-flex justify-space-between align-center"
-                  >
+                  <v-card-title class="d-flex justify-space-between align-center">
                     <span class="text-h6">Notifications</span>
                     <v-btn icon @click="closeNotifications">
                       <v-icon>mdi-close</v-icon>
@@ -191,7 +72,7 @@
                     class="text-caption font-weight-bold"
                     style="color: #555; white-space: nowrap"
                   >
-                    AlyssaC.Alvarez
+                    {{ auth.user.username }}
                   </span>
                   <span
                     class="text-caption font-weight-medium"
@@ -209,9 +90,7 @@
             <v-row class="mb-6">
               <v-col cols="12" sm="6" md="3">
                 <v-card color="#007bff" @click="filterByStatus('Total')">
-                  <v-card-text
-                    class="d-flex align-center justify-space-between"
-                  >
+                  <v-card-text class="d-flex align-center justify-space-between">
                     <div>
                       <div class="text-h6 font-weight-bold text-white">
                         Total Applicants
@@ -226,13 +105,9 @@
               </v-col>
               <v-col cols="12" sm="6" md="3">
                 <v-card color="#ffc107" @click="filterByStatus('Pending')">
-                  <v-card-text
-                    class="d-flex align-center justify-space-between"
-                  >
+                  <v-card-text class="d-flex align-center justify-space-between">
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Pending
-                      </div>
+                      <div class="text-h6 font-weight-bold text-white">Pending</div>
                       <div class="text-h4 font-weight-bold text-white">
                         {{ pendingApplicants }}
                       </div>
@@ -243,39 +118,27 @@
               </v-col>
               <v-col cols="12" sm="6" md="3">
                 <v-card color="#28a745" @click="filterByStatus('Verified')">
-                  <v-card-text
-                    class="d-flex align-center justify-space-between"
-                  >
+                  <v-card-text class="d-flex align-center justify-space-between">
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Verified
-                      </div>
+                      <div class="text-h6 font-weight-bold text-white">Verified</div>
                       <div class="text-h4 font-weight-bold text-white">
                         {{ verifiedApplicants }}
                       </div>
                     </div>
-                    <v-icon size="48" color="white"
-                      >mdi-check-circle-outline</v-icon
-                    >
+                    <v-icon size="48" color="white">mdi-check-circle-outline</v-icon>
                   </v-card-text>
                 </v-card>
               </v-col>
               <v-col cols="12" sm="6" md="3">
                 <v-card color="#dc3545" @click="filterByStatus('Return')">
-                  <v-card-text
-                    class="d-flex align-center justify-space-between"
-                  >
+                  <v-card-text class="d-flex align-center justify-space-between">
                     <div>
-                      <div class="text-h6 font-weight-bold text-white">
-                        Return
-                      </div>
+                      <div class="text-h6 font-weight-bold text-white">Return</div>
                       <div class="text-h4 font-weight-bold text-white">
                         {{ returnApplicants }}
                       </div>
                     </div>
-                    <v-icon size="48" color="white"
-                      >mdi-alert-circle-outline</v-icon
-                    >
+                    <v-icon size="48" color="white">mdi-alert-circle-outline</v-icon>
                   </v-card-text>
                 </v-card>
               </v-col>
@@ -371,7 +234,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+const auth = useAuthStore();
 const fileInput = ref(null);
 const search = ref("");
 const activeFilter = ref("All");
@@ -388,8 +254,7 @@ const notifications = ref([
   {
     title: "Documents submitted for verification",
     applicationId: "Application ID: BP-2025-0808-001",
-    message:
-      "A new building permit application has been submitted for verification.",
+    message: "A new building permit application has been submitted for verification.",
     time: "Just now",
     read: false,
   },
@@ -478,9 +343,7 @@ const filteredApplicants = computed(() => {
     );
   }
   if (activeFilter.value !== "All" && activeFilter.value !== "Total") {
-    filtered = filtered.filter(
-      (applicant) => applicant.status === activeFilter.value
-    );
+    filtered = filtered.filter((applicant) => applicant.status === activeFilter.value);
   }
   return filtered;
 });

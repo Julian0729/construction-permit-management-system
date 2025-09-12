@@ -1,127 +1,14 @@
 <template>
   <v-app>
-    <v-app-bar flat color="#0000CC" dark height="88">
-      <v-container
-        fluid
-        class="d-flex align-center justify-space-between py-0"
-        style="max-width: 1600px"
-      >
-        <div class="d-flex align-center">
-          <v-img
-            src="https://www2.naga.gov.ph/wp-content/uploads/2022/05/Naga_City_Official_Seal-1.png"
-            alt="LGU Seal"
-            width="85"
-            height="75"
-            contain
-            class="me-3"
-          />
-          <div>
-            <div
-              style="
-                font-size: 12px;
-                font-weight: 400;
-                color: white;
-                line-height: 1.2;
-              "
-            >
-              REPUBLIC OF THE PHILIPPINES
-            </div>
-            <div
-              style="
-                font-size: 15px;
-                font-weight: 700;
-                color: white;
-                line-height: 1.2;
-                letter-spacing: 0.5px !important;
-              "
-            >
-              CITY GOVERNMENT OF NAGA
-            </div>
-          </div>
-        </div>
-
-        <div class="d-none d-md-flex nav-links">
-          <v-btn text class="mx-2" style="color: white" to="/home">Home</v-btn>
-          <v-btn text class="mx-2" style="color: white" to="/services"
-            >Services</v-btn
-          >
-          <v-btn text class="mx-2" style="color: white" to="/about"
-            >About</v-btn
-          >
-        </div>
-      </v-container>
-    </v-app-bar>
-
-    <v-navigation-drawer app permanent>
-      <div class="d-flex align-center px-4" style="height: 57px">
-        <v-icon size="36" class="me-2" color="#007bff"
-          >mdi-office-building</v-icon
-        >
-        <div>
-          <div class="text-h7 font-weight-bold" style="line-height: 1.2">
-            Construction Permit
-          </div>
-          <div class="text-caption font-weight-regular" style="color: #6c757d">
-            Management System
-          </div>
-        </div>
-      </div>
-
-      <div class="d-flex flex-column" style="height: calc(100vh - 88px - 57px)">
-        <v-list
-          nav
-          dense
-          class="py-0"
-          style="font-size: 14px; flex-grow: 1; overflow-y: auto"
-        >
-          <v-list-item link to="/dashboard" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-home-outline</v-icon>
-              <span>Dashboard</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/locational-clearance" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-map-marker-outline</v-icon>
-              <span>Locational Clearance</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/bpapplicants" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-document-outline</v-icon>
-              <span>Building Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/occupancy-permit" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-file-certificate-outline</v-icon>
-              <span>Occupancy Permit</span>
-            </div>
-          </v-list-item>
-          <v-list-item link to="/compliance-monitoring" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-clipboard-list-outline</v-icon>
-              <span>Compliance Monitoring</span>
-            </div>
-          </v-list-item>
-        </v-list>
-
-        <v-list nav dense class="py-0 mt-auto" style="font-size: 14px">
-          <v-list-item link @click="logout" class="py-1">
-            <div class="d-flex align-center">
-              <v-icon class="me-3">mdi-logout</v-icon>
-              <span>Logout</span>
-            </div>
-          </v-list-item>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
-
+    <AdminHeader />
+    <AdminNavigation />
     <v-main class="bg-grey-lighten-4">
       <v-container class="pa-4" fluid style="max-width: 1200px">
         <div class="d-flex justify-space-between align-center mb-6">
           <div>
-            <h1 class="text-h4 font-weight-bold">Welcome back, Alyssa!</h1>
+            <h1 class="text-h4 font-weight-bold">
+              Welcome back, {{ auth.user.username }}!
+            </h1>
             <div class="text-subtitle-1 text-grey-darken-1">
               {{ formattedDate }}
             </div>
@@ -129,21 +16,11 @@
         </div>
 
         <v-row>
-          <v-col
-            v-for="metric in metrics"
-            :key="metric.title"
-            cols="12"
-            sm="6"
-            md="3"
-          >
+          <v-col v-for="metric in metrics" :key="metric.title" cols="12" sm="6" md="3">
             <v-card class="pa-4 rounded-lg elevation-1" flat>
               <div class="d-flex align-center justify-space-between">
                 <div class="text-subtitle-1 text-grey">{{ metric.title }}</div>
-                <v-avatar
-                  :color="metric.iconColor"
-                  size="48"
-                  class="rounded-lg"
-                >
+                <v-avatar :color="metric.iconColor" size="48" class="rounded-lg">
                   <v-icon dark size="30">{{ metric.icon }}</v-icon>
                 </v-avatar>
               </div>
@@ -151,13 +28,7 @@
                 {{ applicationCounts[metric.key] }}
               </div>
               <div class="d-flex align-center">
-                <div
-                  :class="[
-                    'text-subtitle-2',
-                    'font-weight-bold',
-                    metric.changeColor,
-                  ]"
-                >
+                <div :class="['text-subtitle-2', 'font-weight-bold', metric.changeColor]">
                   <v-icon :color="metric.changeIconColor" small>
                     {{ metric.changeIcon }}
                   </v-icon>
@@ -208,7 +79,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
+const auth = useAuthStore();
 const logout = () => {
   console.log("Logged out");
 };
@@ -320,10 +193,8 @@ const applicationCounts = computed(() => {
   const counts = {
     total: applications.value.length,
     pending: pendingApplications.value.length,
-    approved: applications.value.filter((app) => app.status === "Approved")
-      .length,
-    rejected: applications.value.filter((app) => app.status === "Rejected")
-      .length,
+    approved: applications.value.filter((app) => app.status === "Approved").length,
+    rejected: applications.value.filter((app) => app.status === "Rejected").length,
   };
   return counts;
 });
